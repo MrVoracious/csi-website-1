@@ -23,7 +23,7 @@ const categories = {
   'public-relations': 'Public Relations',
   'social-media': 'Social Media & Photography',
   content: 'Content',
-  'logistics': 'Logistics & Hospitality',
+  logistics: 'Logistics & Hospitality',
 };
 
 type TeamMember = {
@@ -51,11 +51,11 @@ for (const category in categories) {
         callToAction: member.entry.linkedIn
           ? {
               text: 'LinkedIn',
-            href: member.entry.linkedIn,
-            target: '_blank',
-            icon: 'tabler:brand-linkedin',
-          }
-        : undefined,
+              href: member.entry.linkedIn,
+              target: '_blank',
+              icon: 'tabler:brand-linkedin',
+            }
+          : undefined,
       };
     })
     .filter((member) => member.image.src); // Filter out members without photos

@@ -11,7 +11,7 @@ metadata:
   title:
     default: 'CSI - Innowave | Technocultural Society of MAIT'
     template: '%s — CSI - Innowave'
-  description: "The Computer Society of India chapter at MAIT - Where Innovation Meets Excellence. Explore tech events, workshops, and student-driven innovation since 2009."
+  description: 'The Computer Society of India chapter at MAIT - Where Innovation Meets Excellence. Explore tech events, workshops, and student-driven innovation since 2009.'
   robots:
     index: true
     follow: true

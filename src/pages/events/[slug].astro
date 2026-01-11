@@ -33,19 +33,19 @@ const post: Post = {
   id: event.slug,
   slug: event.slug,
   permalink: `/events/${event.slug}`,
-  
+
   publishDate: new Date(event.entry.eventDate),
   updateDate: new Date(event.entry.eventDate),
-  
+
   title: event.entry.title,
   excerpt: event.entry.excerpt || '',
   image: imageSrc,
-  
+
   category: { slug: 'events', title: 'Events' },
   tags: event.entry.galleryTag ? [{ slug: event.entry.galleryTag, title: event.entry.galleryTag }] : [],
-  
+
   content: '',
-  
+
   metadata: {},
 };
 
@@ -86,86 +86,86 @@ const eventDetails = [
 <Layout metadata={metadata}>
   <section class="px-4 py-16 mx-auto max-w-4xl sm:px-6 lg:px-8">
     <ToBlogLink />
-    
+
     <article>
       <header class="mb-8">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
           {post.title}
         </h1>
-        
-        {post.excerpt && (
-          <p class="text-xl text-gray-600 dark:text-gray-400 mb-6">
-            {post.excerpt}
-          </p>
-        )}
+
+        {post.excerpt && <p class="text-xl text-gray-600 dark:text-gray-400 mb-6">{post.excerpt}</p>}
 
         <!-- Event Details -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg mb-6">
-          {eventDetails.map((detail) => (
-            <div class="flex items-start gap-3">
-              <span class="text-primary mt-1">
-                <svg class="w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none">
-                  <use href={`/icons/tabler-sprite.svg#${detail.icon.replace('tabler:', '')}`} />
-                </svg>
-              </span>
-              <div>
-                <div class="text-sm text-gray-600 dark:text-gray-400">{detail.label}</div>
-                <div class="font-medium text-gray-900 dark:text-white">{detail.value}</div>
+          {
+            eventDetails.map((detail) => (
+              <div class="flex items-start gap-3">
+                <span class="text-primary mt-1">
+                  <svg
+                    class="w-5 h-5"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"
+                  >
+                    <use href={`/icons/tabler-sprite.svg#${detail.icon.replace('tabler:', '')}`} />
+                  </svg>
+                </span>
+                <div>
+                  <div class="text-sm text-gray-600 dark:text-gray-400">{detail.label}</div>
+                  <div class="font-medium text-gray-900 dark:text-white">{detail.value}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          }
         </div>
 
-        {event.entry.registrationLink && (
-          <div class="mb-6">
-            <a
-              href={event.entry.registrationLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors"
-            >
-              Register Now
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          </div>
-        )}
+        {
+          event.entry.registrationLink && (
+            <div class="mb-6">
+              <a
+                href={event.entry.registrationLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors"
+              >
+                Register Now
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+              </a>
+            </div>
+          )
+        }
 
-        {imageSrc && (
-          <img
-            src={imageSrc}
-            alt={post.title}
-            class="w-full rounded-lg shadow-lg mb-8"
-          />
-        )}
+        {imageSrc && <img src={imageSrc} alt={post.title} class="w-full rounded-lg shadow-lg mb-8" />}
       </header>
 
       <div class="prose prose-lg dark:prose-invert max-w-none">
-        {eventData?.description && (
-          <DocumentRenderer document={await eventData.description()} client:load />
-        )}
+        {eventData?.description && <DocumentRenderer document={await eventData.description()} client:load />}
       </div>
 
-      {event.entry.galleryTag && (
-        <div class="mt-12 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-            Event Gallery
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400 mb-4">
-            Check out photos from this event in our gallery!
-          </p>
-          <a
-            href="/gallery"
-            class="inline-flex items-center gap-2 text-primary hover:underline font-semibold"
-          >
-            View Gallery
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-      )}
+      {
+        event.entry.galleryTag && (
+          <div class="mt-12 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Event Gallery</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-4">Check out photos from this event in our gallery!</p>
+            <a href="/gallery" class="inline-flex items-center gap-2 text-primary hover:underline font-semibold">
+              View Gallery
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        )
+      }
     </article>
 
     <div class="mt-12">
