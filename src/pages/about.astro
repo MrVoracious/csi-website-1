@@ -7,17 +7,19 @@ import Steps2 from '~/components/widgets/Steps2.astro';
 import Features from '~/components/widgets/Features.astro';
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
+import matesImage from '~/assets/images/image.png';
+import objectivesImage from '~/assets/images/image1.png';
+import aboutImage from '~/assets/images/image2.png';
+import Image from '~/components/common/Image.astro';
 
 export const prerender = true;
 
 const reader = createReader(process.cwd(), keystaticConfig);
 
-// Fetch about content (will use default if not created yet)
 let aboutData;
 try {
   aboutData = await reader.singletons.about.read();
 } catch (e) {
-  // Default content if Keystatic entry doesn't exist yet
   aboutData = {
     title: 'About CSI - Innowave',
     stats: [
@@ -41,10 +43,14 @@ const metadata = {
     subtitle="The Computer Society of India chapter at Maharaja Agrasen Institute of Technology"
   />
 
-  <!-- Main Description -->
   <Content
     id="about"
     columns={1}
+    image={{
+      src: aboutImage,
+      alt: 'CSI Innowave Team',
+      class: 'mx-auto w-full rounded-lg bg-gray-500 shadow-lg max-w-xs',
+    }}
     items={[
       {
         description:
@@ -53,7 +59,6 @@ const metadata = {
     ]}
   />
 
-  <!-- Stats Widget -->
   <Stats
     title="Our Impact"
     stats={aboutData?.stats?.map((stat) => ({
@@ -67,7 +72,6 @@ const metadata = {
     ]}
   />
 
-  <!-- Vision & Mission -->
   <Features
     id="vision-mission"
     title="Vision & Mission"
@@ -88,7 +92,6 @@ const metadata = {
     ]}
   />
 
-  <!-- Objectives -->
   <Steps2
     title="Objectives"
     subtitle="What drives CSI - Innowave"
@@ -118,12 +121,20 @@ const metadata = {
         icon: 'tabler:heart-handshake',
       },
     ]}
-  />
+  >
+    <div slot="callToAction" class="mt-24">
+      <Image src={objectivesImage} alt="CSI Objectives" class="mx-auto w-full rounded-lg bg-gray-500 shadow-lg" />
+    </div>
+  </Steps2>
 
-  <!-- About MATES -->
   <Content
     isReversed
     title="About MATES"
+    image={{
+      src: matesImage,
+      alt: 'Maharaja Agrasen Technical Education Society',
+      class: 'mx-auto w-full rounded-lg bg-gray-500 shadow-lg max-w-[12rem] mt-12',
+    }}
     items={[
       {
         title: 'Maharaja Agrasen Technical Education Society',

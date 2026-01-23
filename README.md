@@ -1,86 +1,138 @@
-# 🚀 AstroWind
+# CSI - Innowave Website
 
-<img src="https://raw.githubusercontent.com/arthelokyo/.github/main/resources/astrowind/lighthouse-score.png" align="right"
-     alt="AstroWind Lighthouse Score" width="100" height="358">
+Official website for the Computer Society of India - Innowave student chapter, built with Astro, Keystatic CMS, and deployed on Vercel.
 
-🌟 _Most *starred* & *forked* Astro theme in 2022, 2023 & 2024_. 🌟
+## Tech Stack
 
-**AstroWind** is a free and open-source template to make your website using **[Astro 5.0](https://astro.build/) + [Tailwind CSS](https://tailwindcss.com/)**. Ready to start a new project and designed taking into account web best practices.
+- **[Astro 5.0](https://astro.build/)** - Modern web framework
+- **[Keystatic CMS](https://keystatic.com/)** - GitHub-based content management
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first styling
+- **[Cloudinary](https://cloudinary.com/)** - Image hosting and optimization
+- **[Vercel](https://vercel.com/)** - Deployment platform
 
-- ✅ **Production-ready** scores in **PageSpeed Insights** reports.
-- ✅ Integration with **Tailwind CSS** supporting **Dark mode** and **_RTL_**.
-- ✅ **Fast and SEO friendly blog** with automatic **RSS feed**, **MDX** support, **Categories & Tags**, **Social Share**, ...
-- ✅ **Image Optimization** (using new **Astro Assets** and **Unpic** for Universal image CDN).
-- ✅ Generation of **project sitemap** based on your routes.
-- ✅ **Open Graph tags** for social media sharing.
-- ✅ **Analytics** built-in Google Analytics, and Splitbee integration.
+## Prerequisites
 
-<br>
+- Node.js 18+ and npm
+- Git
+- GitHub account with access to the repository
+- Cloudinary account (for image hosting)
 
-![AstroWind Theme Screenshot](https://raw.githubusercontent.com/arthelokyo/.github/main/resources/astrowind/screenshot-astrowind-1.0.png)
+## Setup Instructions
 
-[![arthelokyo](https://custom-icon-badges.demolab.com/badge/made%20by%20-arthelokyo-556bf2?style=flat-square&logo=arthelokyo&logoColor=white&labelColor=101827)](https://github.com/arthelokyo)
-[![License](https://img.shields.io/github/license/arthelokyo/astrowind?style=flat-square&color=dddddd&labelColor=000000)](https://github.com/arthelokyo/astrowind/blob/main/LICENSE.md)
-[![Maintained](https://img.shields.io/badge/maintained%3F-yes-brightgreen.svg?style=flat-square)](https://github.com/arthelokyo)
-[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat-square)](https://github.com/arthelokyo/astrowind#contributing)
-[![Known Vulnerabilities](https://snyk.io/test/github/arthelokyo/astrowind/badge.svg?style=flat-square)](https://snyk.io/test/github/arthelokyo/astrowind)
-[![Stars](https://img.shields.io/github/stars/arthelokyo/astrowind.svg?style=social&label=stars&maxAge=86400&color=ff69b4)](https://github.com/arthelokyo/astrowind)
-[![Forks](https://img.shields.io/github/forks/arthelokyo/astrowind.svg?style=social&label=forks&maxAge=86400&color=ff69b4)](https://github.com/arthelokyo/astrowind)
+### 1. Clone the Repository
 
-<br>
-
-<details open>
-<summary>Table of Contents</summary>
-
-- [Demo](#demo)
-- [Upcoming: AstroWind 2.0 – We Need Your Vision!](#-upcoming-astrowind-20--we-need-your-vision)
-- [TL;DR](#tldr)
-- [Getting started](#getting-started)
-  - [Project structure](#project-structure)
-  - [Commands](#commands)
-  - [Configuration](#configuration)
-  - [Deploy](#deploy)
-- [Frequently Asked Questions](#frequently-asked-questions)
-- [Related Projects](#related-projects)
-- [Contributing](#contributing)
-- [Acknowledgements](#acknowledgements)
-- [License](#license)
-
-</details>
-
-<br>
-
-## Demo
-
-📌 [https://astrowind.vercel.app/](https://astrowind.vercel.app/)
-
-<br>
-
-## 🔔 Upcoming: AstroWind 2.0 – We Need Your Vision!
-
-We're embarking on an exciting journey with **AstroWind 2.0**, and we want you to be a part of it! We're currently taking the first steps in developing this new version and your insights are invaluable. Join the discussion and share your feedback, ideas, and suggestions to help shape the future of **AstroWind**. Let's make **AstroWind 2.0** even better, together!
-
-[Share Your Feedback in Our Discussion!](https://github.com/arthelokyo/astrowind/discussions/392)
-
-<br>
-
-## TL;DR
-
-```shell
-npm create astro@latest -- --template arthelokyo/astrowind
+```bash
+git clone https://github.com/PrathamGupta06/csi-website.git
+cd csi-website
 ```
 
-## Getting started
+### 2. Install Dependencies
 
-**AstroWind** tries to give you quick access to creating a website using [Astro 5.0](https://astro.build/) + [Tailwind CSS](https://tailwindcss.com/). It's a free theme which focuses on simplicity, good practices and high performance.
+```bash
+npm install
+```
 
-Very little vanilla javascript is used only to provide basic functionality so that each developer decides which framework (React, Vue, Svelte, Solid JS...) to use and how to approach their goals.
+### 3. Configure Environment Variables
 
-In this version the template supports all the options in the `output` configuration, `static`, `hybrid` and `server`, but the blog only works with `prerender = true`. We are working on the next version and aim to make it fully compatible with SSR.
+Create a `.env` file in the root directory:
 
-### Project structure
+```env
+# Cloudinary Configuration
+PUBLIC_CLOUDINARY_CLOUD_NAME=dop6gul0f
 
-Inside **AstroWind** template, you'll see the following folders and files:
+# Site URL (update for production)
+PUBLIC_SITE_URL=http://localhost:4321
+
+# Keystatic GitHub Integration
+KEYSTATIC_GITHUB_CLIENT_ID=your_github_app_client_id
+KEYSTATIC_GITHUB_CLIENT_SECRET=your_github_app_client_secret
+KEYSTATIC_SECRET=your_random_secret_key
+PUBLIC_KEYSTATIC_GITHUB_APP_SLUG=csi-website-keystatic
+```
+
+**Note:** For local development without GitHub OAuth, Keystatic will work in local mode automatically.
+
+### 4. Run Development Server
+
+```bash
+npm run dev
+```
+
+The site will be available at `http://localhost:4321`
+
+## Content Management
+
+### Accessing Keystatic Admin
+
+- **Local Development:** Navigate to `http://localhost:4321/keystatic`
+- **Production:** Navigate to `https://csi-website-tau.vercel.app/keystatic`
+
+### Content Collections
+
+The CMS manages the following content types:
+
+- **Sponsors** - Organization sponsors with logos
+- **Events** - Upcoming and past events
+- **Team** - Team members organized by category
+- **Gallery** - Event photos and memories
+- **About** - Vision, mission, and objectives
+
+### Adding Content
+
+1. Access the Keystatic admin interface
+2. Authenticate with GitHub (production) or use local mode (development)
+3. Select a collection (e.g., Events, Team)
+4. Click "Create Entry" and fill in the details
+5. For images, use Cloudinary URLs
+6. Save - content is automatically committed to GitHub
+
+## Image Management
+
+All images are hosted on Cloudinary. To add images:
+
+1. Upload images to Cloudinary
+2. Copy the image URL
+3. Paste the URL in Keystatic image fields
+
+## Deployment
+
+### Vercel Deployment
+
+The site is configured for automatic deployment on Vercel:
+
+1. Push changes to the `main` branch
+2. Vercel automatically builds and deploys
+3. Production URL: `https://csi-website-tau.vercel.app`
+
+### Environment Variables on Vercel
+
+Ensure these environment variables are set in Vercel project settings:
+
+- `PUBLIC_CLOUDINARY_CLOUD_NAME`
+- `PUBLIC_SITE_URL`
+- `KEYSTATIC_GITHUB_CLIENT_ID`
+- `KEYSTATIC_GITHUB_CLIENT_SECRET`
+- `KEYSTATIC_SECRET`
+- `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`
+
+## Team Collaboration
+
+### For Content Editors
+
+1. Get added as a collaborator to the GitHub repository
+2. Visit the production site at `/keystatic`
+3. Authenticate with your GitHub account
+4. Edit content - changes are saved as Git commits
+
+### For Developers
+
+1. Clone the repository
+2. Create a new branch for features: `git checkout -b feature/your-feature`
+3. Make changes and test locally
+4. Push and create a pull request
+5. After review, merge to `main` for deployment
+
+## Project Structure
 
 ```
 /
@@ -137,15 +189,7 @@ There's nothing special about `src/components/`, but that's where we like to put
 
 Any static assets, like images, can be placed in the `public/` directory if they do not require any transformation or in the `assets/` directory if they are imported directly.
 
-[![Edit AstroWind on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://githubbox.com/arthelokyo/astrowind/tree/main) [![Open in Gitpod](https://svgshare.com/i/xdi.svg)](https://gitpod.io/?on=gitpod#https://github.com/arthelokyo/astrowind) [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/arthelokyo/astrowind)
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file `README.md`. Update `src/config.yaml` and contents. Have fun!
-
-<br>
-
-### Commands
-
-All commands are run from the root of the project, from a terminal:
+## Commands
 
 | Command             | Action                                             |
 | :------------------ | :------------------------------------------------- |
@@ -155,148 +199,32 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`   | Preview your build locally, before deploying       |
 | `npm run check`     | Check your project for errors                      |
 | `npm run fix`       | Run Eslint and format codes with Prettier          |
-| `npm run astro ...` | Run CLI commands like `astro add`, `astro preview` |
 
-<br>
+## Pages
 
-### Configuration
+- **Home** (`/`) - Hero section, sponsors, stats, recent events
+- **About** (`/about`) - Vision, mission, objectives
+- **Team** (`/team`) - Team members organized by category
+- **Events** (`/events`) - Event listings with detail pages
+- **Gallery** (`/gallery`) - Photo gallery with Cloudinary integration
+- **Contact** (`/contact`) - Contact information
 
-Basic configuration file: `./src/config.yaml`
+## Customization
 
-```yaml
-site:
-  name: 'Example'
-  site: 'https://example.com'
-  base: '/' # Change this if you need to deploy to Github Pages, for example
-  trailingSlash: false # Generate permalinks with or without "/" at the end
+### Site Configuration
 
-  googleSiteVerificationId: false # Or some value,
+Edit `src/config.yaml` to customize:
+- Site name and metadata
+- Navigation structure
+- Events per page
+- Social media links
 
-# Default SEO metadata
-metadata:
-  title:
-    default: 'Example'
-    template: '%s — Example'
-  description: 'This is the default meta description of Example website'
-  robots:
-    index: true
-    follow: true
-  openGraph:
-    site_name: 'Example'
-    images:
-      - url: '~/assets/images/default.png'
-        width: 1200
-        height: 628
-    type: website
-  twitter:
-    handle: '@twitter_user'
-    site: '@twitter_user'
-    cardType: summary_large_image
+### Styling
 
-i18n:
-  language: en
-  textDirection: ltr
-
-apps:
-  blog:
-    isEnabled: true # If the blog will be enabled
-    postsPerPage: 6 # Number of posts per page
-
-    post:
-      isEnabled: true
-      permalink: '/blog/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
-      robots:
-        index: true
-
-    list:
-      isEnabled: true
-      pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
-      robots:
-        index: true
-
-    category:
-      isEnabled: true
-      pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
-      robots:
-        index: true
-
-    tag:
-      isEnabled: true
-      pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
-      robots:
-        index: false
-
-    isRelatedPostsEnabled: true # If a widget with related posts is to be displayed below each post
-    relatedPostsCount: 4 # Number of related posts to display
-
-analytics:
-  vendors:
-    googleAnalytics:
-      id: null # or "G-XXXXXXXXXX"
-
-ui:
-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
-```
-
-<br>
-
-#### Customize Design
-
-To customize Font families, Colors or more Elements refer to the following files:
-
-- `src/components/CustomStyles.astro`
-- `src/assets/styles/tailwind.css`
-
-### Deploy
-
-#### Deploy to production (manual)
-
-You can create an optimized production build with:
-
-```shell
-npm run build
-```
-
-Now, your website is ready to be deployed. All generated files are located at
-`dist` folder, which you can deploy the folder to any hosting service you
-prefer.
-
-#### Deploy to Netlify
-
-Clone this repository on your own GitHub account and deploy it to Netlify:
-
-[![Netlify Deploy button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/arthelokyo/astrowind)
-
-#### Deploy to Vercel
-
-Clone this repository on your own GitHub account and deploy to Vercel:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Farthelokyo%2Fastrowind)
-
-<br>
-
-## Frequently Asked Questions
-
-- Why?
--
--
-
-<br>
-
-## Related projects
-
-- [TailNext](https://tailnext.vercel.app/) - Free template using Next.js 14 and Tailwind CSS with the new App Router.
-- [Qwind](https://qwind.pages.dev/) - Free template to make your website using Qwik + Tailwind CSS.
-
-## Contributing
-
-If you have any ideas, suggestions or find any bugs, feel free to open a discussion, an issue or create a pull request.
-That would be very useful for all of us and we would be happy to listen and take action.
-
-## Acknowledgements
-
-Initially created by **Arthelokyo** and maintained by a community of [contributors](https://github.com/arthelokyo/astrowind/graphs/contributors).
+- **Custom styles:** `src/components/CustomStyles.astro`
+- **Tailwind config:** `tailwind.config.js`
+- **Global styles:** `src/assets/styles/tailwind.css`
 
 ## License
 
-**AstroWind** is licensed under the MIT license — see the [LICENSE](./LICENSE.md) file for details.
+This project is based on the AstroWind template,
