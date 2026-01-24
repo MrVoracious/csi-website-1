@@ -1,0 +1,310 @@
+:root {
+    --brand-color: #7acf3e;
+    --background: #050505;
+    --grey: oklch(70.7% .022 261.325);
+    --green: oklch(72.3% .219 149.579);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+::selection {
+    background: var(--brand-color);
+}
+
+::-moz-selection {
+    background: var(--brand-color);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--brand-color);
+    border-radius: 8px;
+}
+
+body {
+    background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    height: 200vh;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+#trailer {
+    width: 10px;
+    height: 10px;
+    background: var(--brand-color);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    border-radius: 100px;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 12vh;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 2vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+}
+
+nav .logo {
+    height: 4vh;
+    width: auto;
+}
+
+nav .menu {
+    font-family: "Space Grotesk";
+    padding: 0 1.25rem;
+    border-radius: 16px;
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+    font-size: 1rem;
+    height: 3rem;
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+nav .menuDots {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 12.5px;
+    transform: rotate(0deg);
+    margin-left: 0.75rem;
+    transition: transform 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+nav .menu:hover>.menuDots {
+    transform: rotate(90deg);
+}
+
+nav .menu:hover>.menuDots>.dot {
+    background-color: black;
+}
+
+nav .menu:hover {
+    cursor: pointer;
+    border-radius: 0px;
+    background-color: white;
+    color: black;
+}
+
+nav .dot {
+    width: 5px;
+    height: 5px;
+    background-color: white;
+    border-radius: 100vw;
+}
+
+.grain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+
+}
+
+canvas {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 0;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 0 2vw;
+    flex-direction: column;
+    position: relative;
+}
+
+.brandName {
+    width: 100%;
+    font-size: 13vw;
+    position: relative;
+}
+
+.sectionName {
+    height: max-content;
+    color: var(--grey);
+    width: 100%;
+    border-bottom: 1px solid #ffffff1a;
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    font-family: "Space Grotesk";
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    padding-bottom: 1rem;
+}
+
+.sectionName>div {
+    color: inherit;
+    font-family: inherit;
+    text-transform: uppercase;
+}
+
+.brandone {
+    text-align: left;
+    margin-bottom: -4vw;
+    overflow: hidden;
+    display: flex;
+}
+
+.brandtwo {
+    overflow: hidden;
+    display: flex;
+    justify-content: end;
+}
+
+.brandone span,
+.brandtwo span{
+    font-family: Syne;
+    font-weight: 700;
+    letter-spacing: -7px;
+}
+
+.brandTaglines {
+    margin-top: 2vw;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.brandone span{
+    transform: translateY(100%);
+    animation: slide-up 500ms cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+.brandtwo span{
+    transform: translateY(100%);
+    animation: slide-up 500ms cubic-bezier(0.33, 1, 0.68, 1) 100ms forwards;
+}
+
+.tagline-1 span{
+    transform: translateY(100%);
+    animation: slide-up 500ms cubic-bezier(0.33, 1, 0.68, 1) 200ms forwards;
+}
+
+.tagline-2 span{
+    transform: translateY(100%);
+    animation: slide-up 500ms cubic-bezier(0.33, 1, 0.68, 1) 300ms forwards;
+}
+
+@keyframes slide-up {
+    from{
+        transform: translateY(100%);
+    }
+    to{
+        transform: translateY(0%);
+    }
+}
+
+.tagline-1 span{
+    font-family: "Space Grotesk";
+    font-size: 1rem;
+    color: var(--grey);
+    text-transform: uppercase;
+}
+
+.tagline-1, .tagline-2{
+    display: flex;
+    overflow: hidden;
+}
+
+.tagline-2 span{
+    font-family: "Space Grotesk";
+    font-size: 1.5rem;
+}
+
+.currentActivity {
+    position: absolute;
+    bottom: 2vw;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 2vw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.eventName {
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+}
+
+.eventName span {
+    text-transform: uppercase;
+    font-family: "Space Grotesk";
+    font-size: 0.75rem;
+    font-weight: 300;
+}
+
+.greenPulse {
+    height: 0.5rem;
+    width: 0.5rem;
+    background-color: var(--green);
+    margin-right: 0.5rem;
+    border-radius: 100vw;
+    animation: pulse 2s cubic-bezier(.4, 0, .6, 1) infinite;
+}
+
+@keyframes pulse {
+    50% {
+        opacity: .5
+    }
+}
+
+.joinBtn {
+    font-family: "Space Grotesk";
+    text-transform: uppercase;
+    color: black;
+    font-weight: 500;
+    font-size: 0.875rem;
+    background-color: white;
+    mix-blend-mode: difference;
+    height: 3rem;
+    padding: 0 2rem;
+    cursor: pointer;
+    transition: transform 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.joinBtn:hover {
+    transform: scale(1.1);
+}

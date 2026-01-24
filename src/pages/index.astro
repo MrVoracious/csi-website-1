@@ -1,247 +1,248 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import Brands from '~/components/widgets/Brands.astro';
-import Features from '~/components/widgets/Features.astro';
-import Grid from '~/components/blog/Grid.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import { createReader } from '@keystatic/core/reader';
-import keystaticConfig from '../../keystatic.config';
-import type { Post } from '~/types';
-
-export const prerender = true;
-
-const reader = createReader(process.cwd(), keystaticConfig);
-
-// Fetch sponsors
-const sponsorsEntries = await reader.collections.sponsors.all();
-const sponsors = sponsorsEntries
-  .sort((a, b) => (a.entry.displayOrder || 0) - (b.entry.displayOrder || 0))
-  .map((sponsor) => ({
-    src: sponsor.entry.logo || '',
-    alt: sponsor.entry.name,
-    width: 120,
-    height: 48,
-  }))
-  .filter((sponsor) => sponsor.src); // Filter out sponsors without logos
-
-// Fetch recent events (latest 3)
-const eventsEntries = await reader.collections.events.all();
-const recentEvents: Post[] = eventsEntries
-  .sort((a, b) => new Date(b.entry.eventDate).getTime() - new Date(a.entry.eventDate).getTime())
-  .slice(0, 3)
-  .map((event) => ({
-    id: event.slug,
-    slug: event.slug,
-    permalink: `/events/${event.slug}`,
-    publishDate: new Date(event.entry.eventDate),
-    updateDate: new Date(event.entry.eventDate),
-    title: event.entry.title,
-    excerpt: event.entry.excerpt || '',
-    image: event.entry.coverImage || '',
-    category: { slug: 'events', title: 'Events' },
-    tags: event.entry.galleryTag ? [{ slug: event.entry.galleryTag, title: event.entry.galleryTag }] : [],
-    metadata: {},
-  }));
-
-const metadata = {
-  title: 'CSI - Innowave | Where Innovation Meets Excellence',
-  ignoreTitleTemplate: true,
-};
+// This "frontmatter" section is where we import styles in Astro
+import '../assets/styles/index.css';
 ---
 
-<Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
+<!DOCTYPE html>
+<html lang="en">
 
-  <Hero
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Join Us',
-        href: '/contact',
-        icon: 'tabler:user-plus',
-      },
-      { text: 'Learn more', href: '#about' },
-    ]}
-  >
-    <Fragment slot="title">
-      <span class="text-accent dark:text-white">&lt; CSI INNOWAVE /&gt;</span>
-      <br />
-      <span class="text-5xl md:text-6xl">WHERE INNOVATION MEETS EXCELLENCE</span>
-    </Fragment>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&family=Syne:wght@400..800&display=swap"
+        rel="stylesheet">
+    <script is:inline src="/lenis.js"></script>
+</head>
 
-    <Fragment slot="subtitle">
-      <span class="hidden sm:inline">
-        <span class="font-semibold">The Computer Society of India</span> at Maharaja Agrasen Institute of Technology
-      </span>
-      <span class="block mb-1 sm:hidden font-bold text-blue-600">CSI - Innowave</span>
-      A premier student technology society fostering innovation, learning, and excellence since 2009. Join us to explore
-      cutting-edge technology, attend workshops, and participate in exciting events.
-    </Fragment>
-  </Hero>
+<body>
+    <nav>
+        <img class="logo" src="/logo.png" alt="">
+        <div class="menu">
+            MENU
+            <div class="menuDots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </nav>
+    <div class="grain"></div>
+    <div id="trailer"></div>
+    <canvas id="canvas"></canvas>
+    <main class="center">
+        <div class="brandName">
+            <div class="sectionName">
+                <div class="sectionNum">[001] introduction</div>
+                <div class="sectionNameText">MAIT TECHNO-CULTURAL SOCIETY</div>
+            </div>
+            <div class="brandone"><span>CSI</span></div>
+            <div class="brandtwo"><span>INNOWAVE</span></div>
+        </div>
+        <div class="brandTaglines">
+            <div class="tagline-1">
+                <span>That help marketing and ops teams <br> move faster.</span>
+            </div>
+            <div class="tagline-2">
+                <span>Where innovation meets excellence</span>
+            </div>
+        </div>
+        <div class="currentActivity">
+            <div class="eventName">
+                <div class="greenPulse"></div>
+                <span>uncharted'25</span>
+            </div>
+            <div class="joinBtn center">
+                Join Us
+            </div>
+        </div>
+    </main>
+</body>
+<script is:inline>
+    // tracker
+    const trailer = document.getElementById("trailer");
 
-  <!-- Stats Widget ******************* -->
+    const animateTrailer = (e) => {
+        trailer.style.display = "grid"
+        const x = e.clientX - trailer.offsetWidth / 2,
+            y = e.clientY - trailer.offsetHeight / 2;
 
-  <Stats
-    title="Our Impact in Numbers"
-    stats={[
-      { title: 'Members', amount: '50+' },
-      { title: 'Collaborations', amount: '50+' },
-      { title: 'Years of Excellence', amount: '14' },
-      { title: 'Event Participants', amount: '1,000+' },
-    ]}
-  />
 
-  <!-- Brands Widget - Sponsors *************** -->
+        const scale = 1;
 
-  <Brands
-    title="Trusted By"
-    subtitle="Our esteemed partners and sponsors who have supported CSI - Innowave"
-    images={sponsors}
-    id="sponsors"
-  />
+        const keyframes = {
+            transform: `translate(${x}px, ${y}px) scale(${scale})`
+        }
 
-  <!-- Features Widget - About Section *************** -->
+        trailer.animate(keyframes, {
+            duration: 200,
+            fill: "forwards"
+        });
+    }
+    window.onmousemove = e => {
+        animateTrailer(e);
+    }
 
-  <Features
-    id="about"
-    tagline="About CSI"
-    title="The Computer Society of India at MAIT"
-    subtitle="A prestigious student society focused on the intersection of technology and society. Established in 2009, we aim to explore advancements and social needs to build a better future."
-    items={[
-      {
-        title: 'Technical Excellence',
-        description:
-          'Workshops, seminars, and hands-on sessions covering latest technologies, frameworks, and industry best practices.',
-        icon: 'tabler:code',
-      },
-      {
-        title: 'Innovation & Creativity',
-        description:
-          'Hackathons, coding competitions, and project showcases that encourage creative problem-solving and innovation.',
-        icon: 'tabler:bulb',
-      },
-      {
-        title: 'Industry Connect',
-        description:
-          'Guest lectures from industry experts, internship fairs, and networking opportunities with leading companies.',
-        icon: 'tabler:briefcase',
-      },
-      {
-        title: 'Team Collaboration',
-        description:
-          'Build lasting connections through team events, cultural activities, and collaborative projects with fellow members.',
-        icon: 'tabler:users',
-      },
-      {
-        title: 'Skill Development',
-        description:
-          'Comprehensive training programs in web development, AI/ML, cybersecurity, and emerging technologies.',
-        icon: 'tabler:chart-line',
-      },
-      {
-        title: 'Community Impact',
-        description:
-          'Initiatives focused on using technology for social good and contributing to the broader tech community.',
-        icon: 'tabler:heart-handshake',
-      },
-    ]}
-  />
 
-  <!-- Recent Events Widget **************** -->
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
-  <section class="px-4 py-16 mx-auto max-w-7xl sm:px-6 lg:px-8">
-    <div class="mb-8 text-center">
-      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Updates & Events</h2>
-      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
-        Explore our recent events, workshops, and activities. Stay updated with the latest happenings in CSI - Innowave.
-      </p>
-    </div>
-    
-    {recentEvents.length > 0 ? (
-      <Grid posts={recentEvents} />
-      <div class="mt-8 text-center">
-        <a
-          href="/events"
-          class="inline-flex items-center gap-2 text-primary hover:underline font-semibold"
-        >
-          View all events
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-      </div>
-    ) : (
-      <div class="text-center py-12">
-        <p class="text-gray-600 dark:text-gray-400">
-          No events available yet. Check back soon!
-        </p>
-      </div>
-    )}
-  </section>
+    // --- CONFIGURATION ---
+    const GRID_SPACING = 40;    // Distance between pluses
+    const PLUS_SIZE = 6;        // Half-arm length of the plus (as before)
+    const HOVER_RADIUS = 250;   // Effect radius
+    const MIN_SCALE = 0.7;      // Inactive scale (60% of full)
+    const MIN_LINE = 1.25;       // Inactive line width
+    const MAX_LINE = 1.6;       // Active line width
 
-  <!-- Features Widget - Highlights *************** -->
+    // Colors as objects (you can change these)
+    const COLOR_ACTIVE = { r: 75, g: 75, b: 75 }; // bright color when active
+    const COLOR_INACTIVE = { r: 255, g: 255, b: 255 };  // darker when inactive
 
-  <Features
-    title="Highlights"
-    subtitle="Memorable moments and achievements from CSI - Innowave"
-    columns={3}
-    items={[
-      {
-        title: 'Digital Revolution',
-        description:
-          'VR gaming stall showcased our tech enthusiasm in Innovation Mela and various events.',
-        icon: 'tabler:device-gamepad',
-      },
-      {
-        title: 'The Spirit of Adventure',
-        description:
-          'Our Society proudly embraces the digital revolution by hosting cutting-edge tech experiences.',
-        icon: 'tabler:rocket',
-      },
-      {
-        title: 'The Joy of Creation',
-        description:
-          'Our entire team came together to uplift events and create joyous memories!',
-        icon: 'tabler:sparkles',
-      },
-      {
-        title: 'Power of Communication',
-        description: 'Communication and planning are crucial for any successful event.',
-        icon: 'tabler:message-circle',
-      },
-      {
-        title: 'The Art of Design',
-        description:
-          'Our team brings creativity to every event, leaving a lasting mark on all attendees.',
-        icon: 'tabler:palette',
-      },
-      {
-        title: 'Team Collaboration',
-        description:
-          'The people who became family, always there through our highs and lows.',
-        icon: 'tabler:heart',
-      },
-    ]}
-  />
+    const INACTIVE_ALPHA = 0.15; // opacity for far pluses
+    // ---------------------
 
-  <!-- CallToAction Widget *********** -->
+    let width, height;
+    let particles = [];
 
-  <CallToAction
-    title="Ready to join CSI - Innowave?"
-    subtitle="Be part of a vibrant community of tech enthusiasts, innovators, and future leaders."
-    actions={[
-      {
-        variant: 'primary',
-        text: 'Contact Us',
-        href: '/contact',
-      },
-      {
-        variant: 'secondary',
-        text: 'View Team',
-        href: '/team',
-      },
-    ]}
-  />
-</Layout>
+    // Mouse state
+    const mouse = { x: -10000, y: -10000 };
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.angle = 0;
+        }
+
+        update() {
+            const dx = mouse.x - this.x;
+            const dy = mouse.y - this.y;
+            const distance = Math.hypot(dx, dy);
+
+            const isActive = distance < HOVER_RADIUS;
+
+            // Defaults (inactive)
+            let alpha = INACTIVE_ALPHA;
+            let scale = MIN_SCALE;
+            let lineW = MIN_LINE;
+            let color = COLOR_INACTIVE;
+            let angle = 0;
+
+            if (isActive) {
+                const pct = 1 - (distance / HOVER_RADIUS); // 0..1 (1 at center)
+
+                // Interpolate visual properties
+                alpha = INACTIVE_ALPHA + (1 - INACTIVE_ALPHA) * pct;
+                scale = MIN_SCALE + (1 - MIN_SCALE) * pct;
+                lineW = MIN_LINE + (MAX_LINE - MIN_LINE) * pct;
+                angle = Math.atan2(dy, dx);
+
+                // Lerp color between inactive and active
+                color = {
+                    r: Math.round(COLOR_INACTIVE.r + (COLOR_ACTIVE.r - COLOR_INACTIVE.r) * pct),
+                    g: Math.round(COLOR_INACTIVE.g + (COLOR_ACTIVE.g - COLOR_INACTIVE.g) * pct),
+                    b: Math.round(COLOR_INACTIVE.b + (COLOR_ACTIVE.b - COLOR_INACTIVE.b) * pct)
+                };
+            }
+
+            this.angle = angle;
+            this.draw(alpha, scale, lineW, color, isActive);
+        }
+
+        draw(alpha, scale, lineW, color, rotate) {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+
+            // Rotate only when active (rotate === true)
+            if (rotate) ctx.rotate(this.angle);
+
+            ctx.scale(scale, scale);
+
+            ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
+            ctx.lineWidth = lineW;
+
+            ctx.beginPath();
+            // horizontal
+            ctx.moveTo(-PLUS_SIZE, 0);
+            ctx.lineTo(PLUS_SIZE, 0);
+            // vertical
+            ctx.moveTo(0, -PLUS_SIZE);
+            ctx.lineTo(0, PLUS_SIZE);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+    }
+
+    function init() {
+        particles = [];
+
+        // size canvas
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+
+        // small padding in px (roughly 1vw)
+        const padding = width * 0.01;
+
+        const safeWidth = width - (padding * 2);
+        const safeHeight = height - (padding * 3);
+
+        // how many points (columns/rows) fit — include the last edge point
+        const cols = Math.floor(safeWidth / GRID_SPACING) + 1;
+        const rows = Math.floor(safeHeight / GRID_SPACING) + 1;
+
+        // actual pixel span of the grid (points are spaced by GRID_SPACING and there are cols-1 intervals)
+        const gridRealWidth = (cols - 1) * GRID_SPACING;
+        const gridRealHeight = (rows - 1) * GRID_SPACING;
+
+        const startX = padding + (safeWidth - gridRealWidth) / 2;
+        const startY = padding + (safeHeight - gridRealHeight) / 2;
+
+        // Use < rather than <= to avoid an extra partial column/row
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < rows; j++) {
+                const x = startX + i * GRID_SPACING;
+                const y = startY + j * GRID_SPACING;
+                // keep within padding bounds
+                if (x >= padding && x <= width - padding && y >= padding && y <= height - padding) {
+                    particles.push(new Particle(x, y));
+                }
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let p of particles) p.update();
+
+        requestAnimationFrame(animate);
+    }
+
+    // Events
+    window.addEventListener('resize', () => {
+        init();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    // When the mouse leaves, move it far away so everything becomes inactive
+    window.addEventListener('mouseout', () => {
+        mouse.x = -10000;
+        mouse.y = -10000;
+    });
+
+    // init + animate
+    init();
+    animate();
+</script>
+
+
+</html>
