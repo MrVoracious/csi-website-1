@@ -77,16 +77,167 @@ nav .logo {
 }
 
 nav .menu {
-    font-family: "Space Grotesk";
     padding: 0 1.25rem;
     border-radius: 16px;
     border: 1px solid white;
     display: flex;
     align-items: center;
-    font-weight: 400;
-    font-size: 1rem;
     height: 3rem;
     transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+}
+
+.menuCont{
+    position: absolute;
+    top: calc(100% + 1px + 16px);
+    right: -1px;
+    z-index: 99999999999;
+    width: 300%;
+    height: 50vh;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+}
+
+.menuItemsCont{
+    width: 100%;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    box-sizing: border-box;
+    padding: 1rem 2rem;
+}
+
+.menu.clicked .menuItemsCont{
+    transform: none;
+    opacity: 1;
+}
+
+.menu.clicked .menuCont{
+    pointer-events: all;
+}
+
+.menuItemsCont{
+    margin-bottom: 16px;
+    color: black;
+    transform: rotate(5deg) translateY(4rem);
+    opacity: 0;
+    transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.menuItemsCont.black{
+    background: black;
+    color: white;
+    transform: rotate(-5deg) translateY(4rem);
+}
+
+.menuItemsCont.black .bi{
+    font-size: 1.75rem;
+}
+
+.menuItem{
+    position: relative;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: inherit;
+}
+
+.menuItem .bi{
+    color: inherit;
+    font-size: 0;
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.menuItem:hover .bi{
+    font-size: 1.75rem;
+}
+
+.menuItem span{
+    color: inherit;
+    font-size: 1.75rem;
+    font-family: "Space Grotesk";
+    font-weight: 300;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.menuItem span::after{
+    content: "]";
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%);
+    font-size: 0;
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.menuItem span::before{
+    content: "[";
+    font-size: 0;
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.menuItem:not(.active):hover span::after{
+    font-size: 1.75rem;
+}
+.menuItem:not(.active):hover span::before{
+    font-size: 1.75rem;
+}
+
+.menuItem.active::after{
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background: black;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    border-radius: 100vw;
+}
+
+.menuItem::after{
+    position: absolute;
+}
+
+.menuItem:nth-last-child(1){
+    margin-bottom: 0;
+}
+
+.menuNotClicked, .menuClicked{
+    font-family: "Space Grotesk";
+    font-weight: 400;
+    font-size: 1rem;
+    color: inherit;
+    transition: transform 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.menuText{
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    color: inherit;
+    padding-right: 0.75rem;
+}
+
+.menuClicked{
+    position: absolute;
+    transform: translateY(200%);
+}
+
+.menu.clicked .menuNotClicked{
+    transform: translateY(-200%);
+}
+
+.menu.clicked .menuClicked{
+    transform: translateY(0%);
 }
 
 nav .menuDots {
@@ -96,19 +247,18 @@ nav .menuDots {
     justify-content: space-between;
     width: 12.5px;
     transform: rotate(0deg);
-    margin-left: 0.75rem;
     transition: transform 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-nav .menu:hover>.menuDots {
+nav .menu:hover>.menuDots, .menu.clicked > .menuDots{
     transform: rotate(90deg);
 }
 
-nav .menu:hover>.menuDots>.dot {
+nav .menu:hover>.menuDots>.dot, .menu.clicked>.menuDots>.dot {
     background-color: black;
 }
 
-nav .menu:hover {
+nav .menu:hover, .menu.clicked {
     cursor: pointer;
     border-radius: 0px;
     background-color: white;
@@ -603,7 +753,6 @@ section.bento {
     box-sizing: border-box;
     padding: 12vh 2vw 0 2vw;
     display: flex;
-    outline: 5px solid red;
     flex-direction: column;
 }
 
@@ -853,4 +1002,91 @@ i {
 
 .link>span {
     color: white;
+}
+
+footer{
+    width: 100vw;
+    height: 400px;
+    border-top: 1px solid white;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.csiFooterName{
+    font-size: 18rem;
+    margin-bottom: -3%;
+    display: flex;
+    align-items: flex-end;
+    font-family: Syne;
+    font-weight: 700;
+    letter-spacing: -7px;
+}
+
+.footerLinks{
+    flex: 1;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.linksContainer{
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2vw;
+    box-sizing: border-box;
+    gap: 0.75rem;
+}
+
+.footerLink{
+    display: flex;
+    align-items: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    opacity: 0.5;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    min-width: 50%;
+}
+
+.footerLink > .arrow{
+    width: 8px;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 0rem;
+    transition: font-size 200ms ease-out;
+    position: relative;
+}
+
+.footerLink.active > .arrow{
+    font-size: 0.75rem;
+}
+
+.footerLink.active{
+    opacity: 0.85;
+}
+
+.footerLink > .arrow > .bi{
+    position: absolute;
+    top: calc(50% + 2px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.footerLink:hover > .arrow{
+    font-size: 0.75rem;
+}
+
+.marginrt{margin-right: 5px;}
+
+.copyright{ 
+ position: absolute;
+ bottom: 1vw;
+ right: 1vw;
+ font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
 }
