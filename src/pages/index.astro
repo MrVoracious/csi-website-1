@@ -1,225 +1,342 @@
 ---
-// This "frontmatter" section is where we import styles in Astro
 import '../assets/styles/index.css';
+import { createReader } from '@keystatic/core/reader';
+import keystaticConfig from '../../keystatic.config';
+import type { Post } from '~/types';
+
+export const prerender = true;
+
+const reader = createReader(process.cwd(), keystaticConfig);
+
+// Fetch recent events (latest 3)
+const eventsEntries = await reader.collections.events.all();
+const recentEvents: Post[] = eventsEntries
+  .sort((a, b) => new Date(b.entry.eventDate).getTime() - new Date(a.entry.eventDate).getTime())
+  .slice(0, 3)
+  .map((event) => ({
+    id: event.slug,
+    slug: event.slug,
+    permalink: `/events/${event.slug}`,
+    publishDate: new Date(event.entry.eventDate),
+    updateDate: new Date(event.entry.eventDate),
+    title: event.entry.title,
+    excerpt: event.entry.excerpt || '',
+    image: event.entry.coverImage || '',
+    category: { slug: 'events', title: 'Events' },
+    tags: event.entry.galleryTag ? [{ slug: event.entry.galleryTag, title: event.entry.galleryTag }] : [],
+    metadata: {},
+  }));
+
+// Helper to format date as DD-MM-YYYY
+const formatDate = (date: Date) => {
+  return date
+    .toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    })
+    .replace(/\//g, '-');
+};
+
+// Helper to extract time (HH:MM)
+const formatTime = (date: Date) => {
+  return date.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+};
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&family=Syne:wght@400..800&display=swap"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&family=Syne:wght@400..800&display=swap"
+      rel="stylesheet"
+    />
     <script is:inline src="/lenis.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="grain"></div>
     <div id="trailer"></div>
     <canvas id="canvas"></canvas>
     <nav>
-        <img class="logo" src="logo.png" alt="">
-        <div class="menu">
-            MENU
-            <div class="menuDots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
+      <img class="logo" src="logo.png" alt="" />
+      <div class="menu">
+        MENU
+        <div class="menuDots">
+          <div class="dot"></div>
+          <div class="dot"></div>
         </div>
+      </div>
     </nav>
     <main class="center">
-        <div class="brandName">
-            <div class="sectionName mainSection">
-                <div class="sectionNum">[001] introduction</div>
-                <div class="sectionNameText">MAIT TECHNO-CULTURAL SOCIETY</div>
-            </div>
-            <div class="brandone"><span>CSI</span></div>
-            <div class="brandtwo"><span>INNOWAVE</span></div>
+      <div class="brandName">
+        <div class="sectionName mainSection">
+          <div class="sectionNum">[001] introduction</div>
+          <div class="sectionNameText">MAIT TECHNO-CULTURAL SOCIETY</div>
         </div>
-        <div class="brandTaglines">
-            <div class="tagline-1">
-                <span>That help marketing and ops teams <br> move faster.</span>
-            </div>
-            <div class="tagline-2">
-                <span>Where innovation meets excellence</span>
-            </div>
+        <div class="brandone"><span>CSI</span></div>
+        <div class="brandtwo"><span>INNOWAVE</span></div>
+      </div>
+      <div class="brandTaglines">
+        <div class="tagline-1">
+          <span>That help marketing and ops teams <br /> move faster.</span>
         </div>
-        <div class="currentActivity">
-            <div class="eventName">
-                <div class="greenPulse"></div>
-                <span>uncharted'25</span>
-            </div>
-            <div class="joinBtn center">
-                Join Us
-            </div>
+        <div class="tagline-2">
+          <span>Where innovation meets excellence</span>
         </div>
+      </div>
+      <div class="currentActivity">
+        <div class="eventName">
+          <div class="greenPulse"></div>
+          <span>uncharted'25</span>
+        </div>
+        <div class="joinBtn center">Join Us</div>
+      </div>
     </main>
     <section class="trust">
-        <div class="trustHeading">Trusted by Teams Across Industries</div>
-        <div class="trustyCont">
-            <div class="company"><img src="trusty.webp" alt=""></div>
-            <div class="company"><img src="trusty2.webp" alt=""></div>
-            <div class="company"><img src="trusty.webp" alt=""></div>
-            <div class="company"><img src="trusty2.webp" alt=""></div>
-            <div class="company"><img src="trusty.webp" alt=""></div>
-            <div class="company"><img src="trusty2.webp" alt=""></div>
-            <div class="company"><img src="trusty.webp" alt=""></div>
-            <div class="company"><img src="trusty2.webp" alt=""></div>
-            <div class="company"><img src="trusty.webp" alt=""></div>
-            <div class="company"><img src="trusty2.webp" alt=""></div>
-            <div class="company"><img src="trusty.webp" alt=""></div>
-            <div class="company"><img src="trusty2.webp" alt=""></div>
-            <div class="company"><img src="trusty.webp" alt=""></div>
-        </div>
+      <div class="trustHeading">Trusted by Teams Across Industries</div>
+      <div class="trustyCont">
+        <div class="company"><img src="trusty.webp" alt="" /></div>
+        <div class="company"><img src="trusty2.webp" alt="" /></div>
+        <div class="company"><img src="trusty.webp" alt="" /></div>
+        <div class="company"><img src="trusty2.webp" alt="" /></div>
+        <div class="company"><img src="trusty.webp" alt="" /></div>
+        <div class="company"><img src="trusty2.webp" alt="" /></div>
+        <div class="company"><img src="trusty.webp" alt="" /></div>
+        <div class="company"><img src="trusty2.webp" alt="" /></div>
+        <div class="company"><img src="trusty.webp" alt="" /></div>
+        <div class="company"><img src="trusty2.webp" alt="" /></div>
+        <div class="company"><img src="trusty.webp" alt="" /></div>
+        <div class="company"><img src="trusty2.webp" alt="" /></div>
+        <div class="company"><img src="trusty.webp" alt="" /></div>
+      </div>
     </section>
     <section class="updates">
-        <div class="sectionName">
-            <div class="sectionNum">[002] activity</div>
-            <div class="sectionNameText">Updates & Events</div>
-        </div>
-        <div class="updateBoxCont">
+      <div class="sectionName">
+        <div class="sectionNum">[002] activity</div>
+        <div class="sectionNameText">Updates & Events</div>
+      </div>
+      <div class="updateBoxCont">
+        {
+          recentEvents.map((event) => (
             <div class="updateBox">
-                <img src="update-1.webp" alt="">
-                <div class="updateInfo">
-                    <h3 class="updateHeading">NBA Visit MAIT</h3>
-                    <p class="updateDesc">The National Board of Accreditation (NBA) visit marks a significant milestone
-                        in MAIT’s journey toward academic excellence and quality assurance. The event focuses on
-                        showcasing the institute’s achievements, infrastructure, innovative teaching practices, and
-                        student activities that align with NBA’s standards of excellence.
-                        The CSI MAIT team efficiently managed the event’s coordination and technical setup, ensuring a
-                        seamless experience for the visiting NBA officials. From department presentations and project
-                        demonstrations to smooth logistics and faculty interactions, CSI members played an integral role
-                        in upholding MAIT’s reputation for discipline, innovation, and teamwork.</p>
-                    <div class="updateTags">
-                        <div class="tag"><i class="bi bi-calendar"></i> 10-10-2025</div>
-                        <div class="tag"><i class="bi bi-clock"></i> 09:00</div>
-                    </div>
+              <img src={event.image} alt={event.title} />
+              <div class="updateInfo">
+                <h3 class="updateHeading">{event.title}</h3>
+                <p class="updateDesc">{event.excerpt}</p>
+                <div class="updateTags">
+                  <div class="tag">
+                    <i class="bi bi-calendar" /> {formatDate(event.publishDate)}
+                  </div>
+                  <div class="tag">
+                    <i class="bi bi-clock" /> {formatTime(event.publishDate)}
+                  </div>
                 </div>
+              </div>
             </div>
-            <div class="updateBox">
-                <img src="update-1.webp" alt="">
-                <div class="updateInfo">
-                    <h3 class="updateHeading">NBA Visit MAIT</h3>
-                    <p class="updateDesc">The National Board of Accreditation (NBA) visit marks a significant milestone
-                        in MAIT’s journey toward academic excellence and quality assurance. The event focuses on
-                        showcasing the institute’s achievements, infrastructure, innovative teaching practices, and
-                        student activities that align with NBA’s standards of excellence.
-                        The CSI MAIT team efficiently managed the event’s coordination and technical setup, ensuring a
-                        seamless experience for the visiting NBA officials. From department presentations and project
-                        demonstrations to smooth logistics and faculty interactions, CSI members played an integral role
-                        in upholding MAIT’s reputation for discipline, innovation, and teamwork.</p>
-                    <div class="updateTags">
-                        <div class="tag"><i class="bi bi-calendar"></i> 10-10-2025</div>
-                        <div class="tag"><i class="bi bi-clock"></i> 09:00</div>
-                    </div>
-                </div>
-            </div>
-            <div class="updateBox">
-                <img src="update-1.webp" alt="">
-                <div class="updateInfo">
-                    <h3 class="updateHeading">NBA Visit MAIT</h3>
-                    <p class="updateDesc">The National Board of Accreditation (NBA) visit marks a significant milestone
-                        in MAIT’s journey toward academic excellence and quality assurance. The event focuses on
-                        showcasing the institute’s achievements, infrastructure, innovative teaching practices, and
-                        student activities that align with NBA’s standards of excellence.
-                        The CSI MAIT team efficiently managed the event’s coordination and technical setup, ensuring a
-                        seamless experience for the visiting NBA officials. From department presentations and project
-                        demonstrations to smooth logistics and faculty interactions, CSI members played an integral role
-                        in upholding MAIT’s reputation for discipline, innovation, and teamwork.</p>
-                    <div class="updateTags">
-                        <div class="tag"><i class="bi bi-calendar"></i> 10-10-2025</div>
-                        <div class="tag"><i class="bi bi-clock"></i> 09:00</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+          ))
+        }
+      </div>
     </section>
     <section class="about" id="aboutSection">
-        <div class="sectionName whiteSection">
-            <div class="sectionNum">[003] about</div>
-            <div class="sectionNameText">About us</div>
+      <div class="sectionName whiteSection">
+        <div class="sectionNum">[003] about</div>
+        <div class="sectionNameText">About us</div>
+      </div>
+      <div id="aboutContentContainer" class="aboutContentCont center">
+        <div id="aboutContent" class="aboutContent center"></div>
+        <div class="numbersCont">
+          <div class="numbers">
+            <div class="numberTopHr widthZero"></div>
+            <span id="numbersHeading" class="fadeLeft">In the numbers</span>
+            <div class="numberBottomHr widthZero"></div>
+          </div>
+          <div class="statCont">
+            <div class="statDiv">
+              <div class="statValue fadeAway">50+</div>
+              <div class="statText fadeAway">members</div>
+            </div>
+            <div class="statDiv">
+              <div class="statValue fadeAway">50+</div>
+              <div class="statText fadeAway">collaborations</div>
+            </div>
+            <div class="statDiv">
+              <div class="statValue fadeAway">14</div>
+              <div class="statText fadeAway">years of csi</div>
+            </div>
+            <div class="statDiv">
+              <div class="statValue fadeAway">1000+</div>
+              <div class="statText fadeAway">participants</div>
+            </div>
+          </div>
         </div>
-        <div id="aboutContentContainer" class="aboutContentCont center">
-            <div id="aboutContent" class="aboutContent center"></div>
-            <div class="numbersCont">
-                <div class="numbers">
-                    <div class="numberTopHr widthZero"></div>
-                    <span id="numbersHeading" class="fadeLeft">In the numbers</span>
-                    <div class="numberBottomHr widthZero"></div>
-
+      </div>
+    </section>
+    <section class="bento">
+        <div class="sectionName">
+            <div class="sectionNum">[004] Highlights</div>
+            <div class="sectionNameText">What we are doing</div>
+        </div>
+        <div class="bentoCont">
+            <div id="cards">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-image">
+                            <img src="update-1.webp" alt="">
+                        </div>
+                        <div class="card-info-wrapper">
+                            <div class="card-info">
+                                <div class="card-info-title">
+                                    <h3>Digital Revolution</h3>
+                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="statCont">
-                    <div class="statDiv">
-                        <div class="statValue fadeAway">50+</div>
-                        <div class="statText fadeAway">members</div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-image">
+                            <img src="update-1.webp" alt="">
+                        </div>
+                        <div class="card-info-wrapper">
+                            <div class="card-info">
+                                <div class="card-info-title">
+                                    <h3>Digital Revolution</h3>
+                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="statDiv">
-                        <div class="statValue fadeAway">50+</div>
-                        <div class="statText fadeAway">collaborations</div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-image">
+                            <img src="update-1.webp" alt="">
+                        </div>
+                        <div class="card-info-wrapper">
+                            <div class="card-info">
+                                <div class="card-info-title">
+                                    <h3>Digital Revolution</h3>
+                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="statDiv">
-                        <div class="statValue fadeAway">14</div>
-                        <div class="statText fadeAway">years of csi</div>
+                </div>
+                <div class="card longCard">
+                    <div class="card-content">
+                        <div class="card-image">
+                            <img src="update-1.webp" alt="">
+                        </div>
+                        <div class="card-info-wrapper">
+                            <div class="card-info">
+                                <div class="card-info-title">
+                                    <h3>Digital Revolution</h3>
+                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="statDiv">
-                        <div class="statValue fadeAway">1000+</div>
-                        <div class="statText fadeAway">participants</div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-image">
+                            <img src="update-1.webp" alt="">
+                        </div>
+                        <div class="card-info-wrapper">
+                            <div class="card-info">
+                                <div class="card-info-title">
+                                    <h3>Digital Revolution</h3>
+                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-image">
+                            <img src="update-1.webp" alt="">
+                        </div>
+                        <div class="card-info-wrapper">
+                            <div class="card-info">
+                                <div class="card-info-title">
+                                    <h3>Digital Revolution</h3>
+                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card longCard">
+                    <div class="card-content">
+                        <div class="card-image">
+                            <img src="update-1.webp" alt="">
+                        </div>
+                        <div class="card-info-wrapper">
+                            <div class="card-info">
+                                <div class="card-info-title">
+                                    <h3>Digital Revolution</h3>
+                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <section class="bento">
-        bento section
-    </section>
-</body>
-<script is:inline>
+  </body>
+  <script is:inline>
     // tracker
-    const trailer = document.getElementById("trailer");
+    const trailer = document.getElementById('trailer');
 
     const animateTrailer = (e) => {
-        trailer.style.display = "grid"
-        const x = e.clientX - trailer.offsetWidth / 2,
-            y = e.clientY - trailer.offsetHeight / 2;
+      trailer.style.display = 'grid';
+      const x = e.clientX - trailer.offsetWidth / 2,
+        y = e.clientY - trailer.offsetHeight / 2;
 
+      const scale = 1;
 
-        const scale = 1;
+      const keyframes = {
+        transform: `translate(${x}px, ${y}px) scale(${scale})`,
+      };
 
-        const keyframes = {
-            transform: `translate(${x}px, ${y}px) scale(${scale})`
-        }
-
-        trailer.animate(keyframes, {
-            duration: 200,
-            fill: "forwards"
-        });
-    }
-    window.onmousemove = e => {
-        animateTrailer(e);
-    }
-
+      trailer.animate(keyframes, {
+        duration: 200,
+        fill: 'forwards',
+      });
+    };
+    window.onmousemove = (e) => {
+      animateTrailer(e);
+    };
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
 
     // --- CONFIGURATION ---
-    const GRID_SPACING = 40;    // Distance between pluses
-    const PLUS_SIZE = 6;        // Half-arm length of the plus (as before)
-    const HOVER_RADIUS = 250;   // Effect radius
-    const MIN_SCALE = 0.7;      // Inactive scale (60% of full)
-    const MIN_LINE = 1.25;       // Inactive line width
-    const MAX_LINE = 1.6;       // Active line width
+    const GRID_SPACING = 40; // Distance between pluses
+    const PLUS_SIZE = 6; // Half-arm length of the plus (as before)
+    const HOVER_RADIUS = 250; // Effect radius
+    const MIN_SCALE = 0.7; // Inactive scale (60% of full)
+    const MIN_LINE = 1.25; // Inactive line width
+    const MAX_LINE = 1.6; // Active line width
 
     // Colors as objects (you can change these)
     const COLOR_ACTIVE = { r: 75, g: 75, b: 75 }; // bright color when active
-    const COLOR_INACTIVE = { r: 255, g: 255, b: 255 };  // darker when inactive
+    const COLOR_INACTIVE = { r: 255, g: 255, b: 255 }; // darker when inactive
 
     const INACTIVE_ALPHA = 0.15; // opacity for far pluses
     // ---------------------
@@ -231,158 +348,161 @@ import '../assets/styles/index.css';
     const mouse = { x: -10000, y: -10000 };
 
     class Particle {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.angle = 0;
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.angle = 0;
+      }
+
+      update() {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.hypot(dx, dy);
+
+        const isActive = distance < HOVER_RADIUS;
+
+        // Defaults (inactive)
+        let alpha = INACTIVE_ALPHA;
+        let scale = MIN_SCALE;
+        let lineW = MIN_LINE;
+        let color = COLOR_INACTIVE;
+        let angle = 0;
+
+        if (isActive) {
+          const pct = 1 - distance / HOVER_RADIUS; // 0..1 (1 at center)
+
+          // Interpolate visual properties
+          alpha = INACTIVE_ALPHA + (1 - INACTIVE_ALPHA) * pct;
+          scale = MIN_SCALE + (1 - MIN_SCALE) * pct;
+          lineW = MIN_LINE + (MAX_LINE - MIN_LINE) * pct;
+          angle = Math.atan2(dy, dx);
+
+          // Lerp color between inactive and active
+          color = {
+            r: Math.round(COLOR_INACTIVE.r + (COLOR_ACTIVE.r - COLOR_INACTIVE.r) * pct),
+            g: Math.round(COLOR_INACTIVE.g + (COLOR_ACTIVE.g - COLOR_INACTIVE.g) * pct),
+            b: Math.round(COLOR_INACTIVE.b + (COLOR_ACTIVE.b - COLOR_INACTIVE.b) * pct),
+          };
         }
 
-        update() {
-            const dx = mouse.x - this.x;
-            const dy = mouse.y - this.y;
-            const distance = Math.hypot(dx, dy);
+        this.angle = angle;
+        this.draw(alpha, scale, lineW, color, isActive);
+      }
 
-            const isActive = distance < HOVER_RADIUS;
+      draw(alpha, scale, lineW, color, rotate) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
 
-            // Defaults (inactive)
-            let alpha = INACTIVE_ALPHA;
-            let scale = MIN_SCALE;
-            let lineW = MIN_LINE;
-            let color = COLOR_INACTIVE;
-            let angle = 0;
+        // Rotate only when active (rotate === true)
+        if (rotate) ctx.rotate(this.angle);
 
-            if (isActive) {
-                const pct = 1 - (distance / HOVER_RADIUS); // 0..1 (1 at center)
+        ctx.scale(scale, scale);
 
-                // Interpolate visual properties
-                alpha = INACTIVE_ALPHA + (1 - INACTIVE_ALPHA) * pct;
-                scale = MIN_SCALE + (1 - MIN_SCALE) * pct;
-                lineW = MIN_LINE + (MAX_LINE - MIN_LINE) * pct;
-                angle = Math.atan2(dy, dx);
+        ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
+        ctx.lineWidth = lineW;
 
-                // Lerp color between inactive and active
-                color = {
-                    r: Math.round(COLOR_INACTIVE.r + (COLOR_ACTIVE.r - COLOR_INACTIVE.r) * pct),
-                    g: Math.round(COLOR_INACTIVE.g + (COLOR_ACTIVE.g - COLOR_INACTIVE.g) * pct),
-                    b: Math.round(COLOR_INACTIVE.b + (COLOR_ACTIVE.b - COLOR_INACTIVE.b) * pct)
-                };
-            }
+        ctx.beginPath();
+        // horizontal
+        ctx.moveTo(-PLUS_SIZE, 0);
+        ctx.lineTo(PLUS_SIZE, 0);
+        // vertical
+        ctx.moveTo(0, -PLUS_SIZE);
+        ctx.lineTo(0, PLUS_SIZE);
+        ctx.stroke();
 
-            this.angle = angle;
-            this.draw(alpha, scale, lineW, color, isActive);
-        }
-
-        draw(alpha, scale, lineW, color, rotate) {
-            ctx.save();
-            ctx.translate(this.x, this.y);
-
-            // Rotate only when active (rotate === true)
-            if (rotate) ctx.rotate(this.angle);
-
-            ctx.scale(scale, scale);
-
-            ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
-            ctx.lineWidth = lineW;
-
-            ctx.beginPath();
-            // horizontal
-            ctx.moveTo(-PLUS_SIZE, 0);
-            ctx.lineTo(PLUS_SIZE, 0);
-            // vertical
-            ctx.moveTo(0, -PLUS_SIZE);
-            ctx.lineTo(0, PLUS_SIZE);
-            ctx.stroke();
-
-            ctx.restore();
-        }
+        ctx.restore();
+      }
     }
 
     function init() {
-        particles = [];
+      particles = [];
 
-        // size canvas
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+      // size canvas
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
 
-        // small padding in px (roughly 1vw)
-        const padding = width * 0.01;
+      // small padding in px (roughly 1vw)
+      const padding = width * 0.01;
 
-        const safeWidth = width - (padding * 2);
-        const safeHeight = height - (padding * 3);
+      const safeWidth = width - padding * 2;
+      const safeHeight = height - padding * 3;
 
-        // how many points (columns/rows) fit — include the last edge point
-        const cols = Math.floor(safeWidth / GRID_SPACING) + 1;
-        const rows = Math.floor(safeHeight / GRID_SPACING) + 1;
+      // how many points (columns/rows) fit — include the last edge point
+      const cols = Math.floor(safeWidth / GRID_SPACING) + 1;
+      const rows = Math.floor(safeHeight / GRID_SPACING) + 1;
 
-        // actual pixel span of the grid (points are spaced by GRID_SPACING and there are cols-1 intervals)
-        const gridRealWidth = (cols - 1) * GRID_SPACING;
-        const gridRealHeight = (rows - 1) * GRID_SPACING;
+      // actual pixel span of the grid (points are spaced by GRID_SPACING and there are cols-1 intervals)
+      const gridRealWidth = (cols - 1) * GRID_SPACING;
+      const gridRealHeight = (rows - 1) * GRID_SPACING;
 
-        const startX = padding + (safeWidth - gridRealWidth) / 2;
-        const startY = padding + (safeHeight - gridRealHeight) / 2;
+      const startX = padding + (safeWidth - gridRealWidth) / 2;
+      const startY = padding + (safeHeight - gridRealHeight) / 2;
 
-        // Use < rather than <= to avoid an extra partial column/row
-        for (let i = 0; i < cols; i++) {
-            for (let j = 0; j < rows; j++) {
-                const x = startX + i * GRID_SPACING;
-                const y = startY + j * GRID_SPACING;
-                // keep within padding bounds
-                if (x >= padding && x <= width - padding && y >= padding && y <= height - padding) {
-                    particles.push(new Particle(x, y));
-                }
-            }
+      // Use < rather than <= to avoid an extra partial column/row
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          const x = startX + i * GRID_SPACING;
+          const y = startY + j * GRID_SPACING;
+          // keep within padding bounds
+          if (x >= padding && x <= width - padding && y >= padding && y <= height - padding) {
+            particles.push(new Particle(x, y));
+          }
         }
+      }
     }
 
     function animate() {
-        ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, width, height);
 
-        for (let p of particles) p.update();
+      for (let p of particles) p.update();
 
-        requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
     }
 
     // Events
     window.addEventListener('resize', () => {
-        init();
+      init();
     });
 
     window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     });
 
     // When the mouse leaves, move it far away so everything becomes inactive
     window.addEventListener('mouseout', () => {
-        mouse.x = -10000;
-        mouse.y = -10000;
+      mouse.x = -10000;
+      mouse.y = -10000;
     });
 
     // init + animate
     init();
     animate();
-</script>
-<script is:inline>
+  </script>
+  <script is:inline>
     const container = document.getElementById('aboutContent');
     const aboutSection = document.getElementById('aboutSection');
 
     // source text
-    const originalText = "CSI at Maharaja Agrasen Institute of Technology (est. 2009) is a student society exploring technology’s role in society. Join us for discussions, projects, and solutions that build a better future.";
+    const originalText =
+      'CSI at Maharaja Agrasen Institute of Technology (est. 2009) is a student society exploring technology’s role in society. Join us for discussions, projects, and solutions that build a better future.';
     const tokens = originalText.split(/(\s+)/);
 
     // render words
-    container.innerHTML = tokens.map(tok => {
+    container.innerHTML = tokens
+      .map((tok) => {
         const esc = tok.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         return `<span class="word">${esc}</span>`;
-    }).join('');
+      })
+      .join('');
 
     const words = container.querySelectorAll('.word');
 
     // tuning
     const SCROLL_PER_WORD = 75; // px it takes for a word to fully appear
-    const STAGGER = 15;         // px offset between start times of consecutive words
+    const STAGGER = 15; // px offset between start times of consecutive words
     const MIN_TOTAL_SCROLL = 300; // minimal animation window (px)
-    const READING_CUSHION = 300;  // extra px so user can read
+    const READING_CUSHION = 300; // extra px so user can read
 
     // these will be calculated and updated on resize
     let TOTAL_SCROLL = 0;
@@ -391,118 +511,118 @@ import '../assets/styles/index.css';
     let ticking = false;
     let hiddenCallbackCalled = false; // ensure callback runs once per disappearance
 
-    function clamp(v, a = 0, b = 1) { return Math.min(Math.max(v, a), b); }
+    function clamp(v, a = 0, b = 1) {
+      return Math.min(Math.max(v, a), b);
+    }
 
     function computeTotalsAndSectionHeight() {
-        // how much scroll the words need (forward+reverse)
-        const needed = (((words.length - 1) * STAGGER) + SCROLL_PER_WORD) * 2;
-        TOTAL_SCROLL = Math.max(MIN_TOTAL_SCROLL, needed) + READING_CUSHION;
+      // how much scroll the words need (forward+reverse)
+      const needed = ((words.length - 1) * STAGGER + SCROLL_PER_WORD) * 2;
+      TOTAL_SCROLL = Math.max(MIN_TOTAL_SCROLL, needed) + READING_CUSHION;
 
-        HALF = TOTAL_SCROLL / 2;
+      HALF = TOTAL_SCROLL / 2;
 
-        // ensure the aboutSection is tall enough: TOTAL_SCROLL plus viewport so user can scroll through
-        const requiredHeightPx = TOTAL_SCROLL + window.innerHeight;
-        // use minHeight so CSS can still control other layout aspects if needed
-        aboutSection.style.minHeight = requiredHeightPx + 200 + 'px';
+      // ensure the aboutSection is tall enough: TOTAL_SCROLL plus viewport so user can scroll through
+      const requiredHeightPx = TOTAL_SCROLL + window.innerHeight;
+      // use minHeight so CSS can still control other layout aspects if needed
+      aboutSection.style.minHeight = requiredHeightPx + 200 + 'px';
     }
 
     function setHiddenStyles() {
-        words.forEach(w => {
-            w.style.transform = `translateY(10%)`;
-            w.style.filter = `blur(10px)`;
-            w.style.opacity = `0`;
-        });
+      words.forEach((w) => {
+        w.style.transform = `translateY(10%)`;
+        w.style.filter = `blur(10px)`;
+        w.style.opacity = `0`;
+      });
     }
 
     function onAllWordsHidden() {
-        const elements = document.querySelectorAll('.statValue, .statText');
-        const widthZero = document.querySelectorAll('.numberTopHr, .numberBottomHr');
-        const numbersHeading = document.getElementById("numbersHeading")
-        elements.forEach(element => {
-            element.classList.add('fadeAway');
-        });
-        widthZero.forEach(element => {
-            element.classList.add('widthZero');
-        });
+      const elements = document.querySelectorAll('.statValue, .statText');
+      const widthZero = document.querySelectorAll('.numberTopHr, .numberBottomHr');
+      const numbersHeading = document.getElementById('numbersHeading');
+      elements.forEach((element) => {
+        element.classList.add('fadeAway');
+      });
+      widthZero.forEach((element) => {
+        element.classList.add('widthZero');
+      });
 
-        numbersHeading.classList.add("fadeLeft")
+      numbersHeading.classList.add('fadeLeft');
     }
 
     function onAllWordsShown() {
-        const elements = document.querySelectorAll('.statValue, .statText');
-        const widthZero = document.querySelectorAll('.numberTopHr, .numberBottomHr');
-        const numbersHeading = document.getElementById("numbersHeading")
-        console.log("running")
-        elements.forEach(element => {
-            element.classList.remove('fadeAway');
-        });
-        widthZero.forEach(element => {
-            element.classList.remove('widthZero');
-        });
+      const elements = document.querySelectorAll('.statValue, .statText');
+      const widthZero = document.querySelectorAll('.numberTopHr, .numberBottomHr');
+      const numbersHeading = document.getElementById('numbersHeading');
+      console.log('running');
+      elements.forEach((element) => {
+        element.classList.remove('fadeAway');
+      });
+      widthZero.forEach((element) => {
+        element.classList.remove('widthZero');
+      });
 
-        numbersHeading.classList.remove("fadeLeft")
+      numbersHeading.classList.remove('fadeLeft');
     }
 
     function update() {
-        if (!aboutSection) return;
+      if (!aboutSection) return;
 
-        // progress: how far we've moved into the trigger zone (positive when element passes top)
-        const rect = aboutSection.getBoundingClientRect();
-        const progress = -rect.top;
+      // progress: how far we've moved into the trigger zone (positive when element passes top)
+      const rect = aboutSection.getBoundingClientRect();
+      const progress = -rect.top;
 
-        // fully outside window (before start or after end) => hidden
-        if (progress <= 0 || progress >= TOTAL_SCROLL) {
-            setHiddenStyles();
+      // fully outside window (before start or after end) => hidden
+      if (progress <= 0 || progress >= TOTAL_SCROLL) {
+        setHiddenStyles();
 
-            onAllWordsHidden();
-            return
-        }
+        onAllWordsHidden();
+        return;
+      }
 
-        if (progress <= (TOTAL_SCROLL) && progress >= 0) {
-            onAllWordsShown();
-        }
+      if (progress <= TOTAL_SCROLL && progress >= 0) {
+        onAllWordsShown();
+      }
 
-        // if we are inside the active window, reset the hidden callback flag so it can trigger again later
-        if (hiddenCallbackCalled) hiddenCallbackCalled = false;
+      // if we are inside the active window, reset the hidden callback flag so it can trigger again later
+      if (hiddenCallbackCalled) hiddenCallbackCalled = false;
 
-        // Determine whether we are in the forward or reverse half
-        const forward = progress <= HALF;
+      // Determine whether we are in the forward or reverse half
+      const forward = progress <= HALF;
 
-        words.forEach((word, i) => {
-            const wordStart = i * STAGGER;
+      words.forEach((word, i) => {
+        const wordStart = i * STAGGER;
 
-            // local progress (px) relative to this word's start
-            const localPx = forward
-                ? (progress - wordStart)
-                : ((TOTAL_SCROLL - progress) - wordStart);
+        // local progress (px) relative to this word's start
+        const localPx = forward ? progress - wordStart : TOTAL_SCROLL - progress - wordStart;
 
-            // map to [0,1] using SCROLL_PER_WORD
-            const raw = localPx / SCROLL_PER_WORD;
-            const wordProgress = clamp(raw, 0, 1);
+        // map to [0,1] using SCROLL_PER_WORD
+        const raw = localPx / SCROLL_PER_WORD;
+        const wordProgress = clamp(raw, 0, 1);
 
-            // slight easing
-            const eased = Math.pow(wordProgress, 0.9);
+        // slight easing
+        const eased = Math.pow(wordProgress, 0.9);
 
-            // visuals
-            const translateY = 10 * (1 - eased); // 10% -> 0%
-            const blur = 10 * (1 - eased);       // 10px -> 0px
-            const opacity = eased;               // 0 -> 1
+        // visuals
+        const translateY = 10 * (1 - eased); // 10% -> 0%
+        const blur = 10 * (1 - eased); // 10px -> 0px
+        const opacity = eased; // 0 -> 1
 
-            word.style.transform = `translateY(${translateY}%)`;
-            word.style.filter = `blur(${blur}px)`;
-            word.style.opacity = `${opacity}`;
-        });
+        word.style.transform = `translateY(${translateY}%)`;
+        word.style.filter = `blur(${blur}px)`;
+        word.style.opacity = `${opacity}`;
+      });
     }
 
     // rAF-throttled scroll handler
     function onScroll() {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                update();
-                ticking = false;
-            });
-            ticking = true;
-        }
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+        ticking = true;
+      }
     }
 
     // init
@@ -512,10 +632,19 @@ import '../assets/styles/index.css';
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', () => {
-        computeTotalsAndSectionHeight();
-        requestAnimationFrame(update);
+      computeTotalsAndSectionHeight();
+      requestAnimationFrame(update);
     });
-</script>
 
+    document.getElementById('cards').onmousemove = (e) => {
+      for (const card of document.getElementsByClassName('card')) {
+        const rect = card.getBoundingClientRect(),
+          x = e.clientX - rect.left,
+          y = e.clientY - rect.top;
 
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      }
+    };
+  </script>
 </html>
