@@ -286,13 +286,14 @@ function update() {
   // fully outside window (before start or after end) => hidden
   if (progress <= 0 || progress >= TOTAL_SCROLL) {
     setHiddenStyles();
-
+    document.getElementById("nav").classList.remove("invert")
     onAllWordsHidden();
     return;
   }
 
   if (progress <= TOTAL_SCROLL && progress >= 0) {
     onAllWordsShown();
+    document.getElementById("nav").classList.add("invert")
   }
 
   // if we are inside the active window, reset the hidden callback flag so it can trigger again later

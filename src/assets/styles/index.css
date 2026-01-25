@@ -69,6 +69,11 @@ nav {
     justify-content: space-between;
     align-items: center;
     z-index: 99;
+    transition: all 500ms cubic-bezier(.4, 0, .6, 1);
+}
+
+nav.invert{
+    filter: invert(1);
 }
 
 nav .logo {
@@ -261,8 +266,8 @@ nav .menu:hover>.menuDots>.dot, .menu.clicked>.menuDots>.dot {
 nav .menu:hover, .menu.clicked {
     cursor: pointer;
     border-radius: 0px;
-    background-color: white;
     color: black;
+    background-color: white;
 }
 
 nav .dot {
