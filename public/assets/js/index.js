@@ -288,7 +288,7 @@ function update() {
   const rect = aboutSection.getBoundingClientRect();
   const progress = -rect.top;
 
-  if (isMobile() && progress <= TOTAL_SCROLL && progress >= -300) {
+  if (isMobile() && progress <= TOTAL_SCROLL && progress >= -(window.innerHeight * 0.9)) {
     words.forEach((word) => {
       word.style.transition = 'all 500ms cubic-bezier(.4, 0, .6, 1)';
       word.style.transform = `translateY(0%)`;
