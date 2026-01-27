@@ -202,15 +202,18 @@ const words = container.querySelectorAll('.word');
 // tuning
 let SCROLL_PER_WORD;
 let STAGGER;
-const MIN_TOTAL_SCROLL = 300; // minimal animation window (px)
-const READING_CUSHION = 300; // extra px so user can read
-console.log(isMobile());
+let MIN_TOTAL_SCROLL = 300;
+let READING_CUSHION = 300;
 if (!isMobile()) {
   SCROLL_PER_WORD = 75;
   STAGGER = 15;
+  MIN_TOTAL_SCROLL = 300;
+  READING_CUSHION = 300;
 } else {
-  SCROLL_PER_WORD = 10;
-  STAGGER = 5;
+  SCROLL_PER_WORD = 0;
+  STAGGER = 0;
+  MIN_TOTAL_SCROLL = 0;
+  READING_CUSHION = 0;
 }
 
 // these will be calculated and updated on resize
@@ -235,6 +238,11 @@ function computeTotalsAndSectionHeight() {
   const requiredHeightPx = TOTAL_SCROLL + window.innerHeight;
   // use minHeight so CSS can still control other layout aspects if needed
   aboutSection.style.minHeight = requiredHeightPx + 200 + 'px';
+
+  if (isMobile()) {
+    aboutSection.style.minHeight = window.innerHeight + 0 + 'px';
+    TOTAL_SCROLL = window.innerHeight;
+  }
 }
 
 function setHiddenStyles() {
@@ -263,7 +271,6 @@ function onAllWordsShown() {
   const elements = document.querySelectorAll('.statValue, .statText');
   const widthZero = document.querySelectorAll('.numberTopHr, .numberBottomHr');
   const numbersHeading = document.getElementById('numbersHeading');
-  console.log('running');
   elements.forEach((element) => {
     element.classList.remove('fadeAway');
   });
@@ -281,9 +288,24 @@ function update() {
   const rect = aboutSection.getBoundingClientRect();
   const progress = -rect.top;
 
+  if (isMobile() && progress <= TOTAL_SCROLL && progress >= -300) {
+    words.forEach((word) => {
+      word.style.transition = 'all 500ms cubic-bezier(.4, 0, .6, 1)';
+      word.style.transform = `translateY(0%)`;
+      word.style.filter = `blur(0px)`;
+      word.style.opacity = `1`;
+    });
+    onAllWordsShown();
+    return
+  }
+
   // fully outside window (before start or after end) => hidden
   if (progress <= 0 || progress >= TOTAL_SCROLL) {
-    setHiddenStyles();
+    if (progress >= TOTAL_SCROLL && !isMobile()) {
+      setHiddenStyles();
+    } else if (progress <= 0) {
+      setHiddenStyles();
+    }
     document.getElementById('nav').classList.remove('invert');
     currentActivity.classList.remove('invert');
     onAllWordsHidden();
@@ -294,15 +316,6 @@ function update() {
     onAllWordsShown();
     currentActivity.classList.add('invert');
     document.getElementById('nav').classList.add('invert');
-
-    if (isMobile()) {
-      words.forEach((word) => {
-        word.style.transition = "all 500ms cubic-bezier(.4, 0, .6, 1)";
-        word.style.transform = `translateY(0%)`;
-        word.style.filter = `blur(0px)`;
-        word.style.opacity = `1`;
-      });
-    }
   }
 
   // if we are inside the active window, reset the hidden callback flag so it can trigger again later
