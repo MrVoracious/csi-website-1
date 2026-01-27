@@ -1,8 +1,12 @@
-// tracker
-const trailer = document.getElementById("trailer");
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
 
+// tracker
+const trailer = document.getElementById('trailer');
+const currentActivity = document.getElementById('currentActivity');
 const animateTrailer = (e) => {
-  trailer.style.display = "grid";
+  trailer.style.display = 'grid';
   const x = e.clientX - trailer.offsetWidth / 2,
     y = e.clientY - trailer.offsetHeight / 2;
 
@@ -14,15 +18,15 @@ const animateTrailer = (e) => {
 
   trailer.animate(keyframes, {
     duration: 200,
-    fill: "forwards",
+    fill: 'forwards',
   });
 };
 window.onmousemove = (e) => {
   animateTrailer(e);
 };
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
 // --- CONFIGURATION ---
 const GRID_SPACING = 40; // Distance between pluses
@@ -77,15 +81,9 @@ class Particle {
 
       // Lerp color between inactive and active
       color = {
-        r: Math.round(
-          COLOR_INACTIVE.r + (COLOR_ACTIVE.r - COLOR_INACTIVE.r) * pct,
-        ),
-        g: Math.round(
-          COLOR_INACTIVE.g + (COLOR_ACTIVE.g - COLOR_INACTIVE.g) * pct,
-        ),
-        b: Math.round(
-          COLOR_INACTIVE.b + (COLOR_ACTIVE.b - COLOR_INACTIVE.b) * pct,
-        ),
+        r: Math.round(COLOR_INACTIVE.r + (COLOR_ACTIVE.r - COLOR_INACTIVE.r) * pct),
+        g: Math.round(COLOR_INACTIVE.g + (COLOR_ACTIVE.g - COLOR_INACTIVE.g) * pct),
+        b: Math.round(COLOR_INACTIVE.b + (COLOR_ACTIVE.b - COLOR_INACTIVE.b) * pct),
       };
     }
 
@@ -148,12 +146,7 @@ function init() {
       const x = startX + i * GRID_SPACING;
       const y = startY + j * GRID_SPACING;
       // keep within padding bounds
-      if (
-        x >= padding &&
-        x <= width - padding &&
-        y >= padding &&
-        y <= height - padding
-      ) {
+      if (x >= padding && x <= width - padding && y >= padding && y <= height - padding) {
         particles.push(new Particle(x, y));
       }
     }
@@ -169,17 +162,17 @@ function animate() {
 }
 
 // Events
-window.addEventListener("resize", () => {
+window.addEventListener('resize', () => {
   init();
 });
 
-window.addEventListener("mousemove", (e) => {
+window.addEventListener('mousemove', (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
 });
 
 // When the mouse leaves, move it far away so everything becomes inactive
-window.addEventListener("mouseout", () => {
+window.addEventListener('mouseout', () => {
   mouse.x = -10000;
   mouse.y = -10000;
 });
@@ -188,32 +181,37 @@ window.addEventListener("mouseout", () => {
 init();
 animate();
 
-const container = document.getElementById("aboutContent");
-const aboutSection = document.getElementById("aboutSection");
+const container = document.getElementById('aboutContent');
+const aboutSection = document.getElementById('aboutSection');
 
 // source text
 const originalText =
-  "CSI at Maharaja Agrasen Institute of Technology (est. 2009) is a student society exploring technology’s role in society. Join us for discussions, projects, and solutions that build a better future.";
+  'CSI at Maharaja Agrasen Institute of Technology (est. 2009) is a student society exploring technology’s role in society. Join us for discussions, projects, and solutions that build a better future.';
 const tokens = originalText.split(/(\s+)/);
 
 // render words
 container.innerHTML = tokens
   .map((tok) => {
-    const esc = tok
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+    const esc = tok.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     return `<span class="word">${esc}</span>`;
   })
-  .join("");
+  .join('');
 
-const words = container.querySelectorAll(".word");
+const words = container.querySelectorAll('.word');
 
 // tuning
-const SCROLL_PER_WORD = 75; // px it takes for a word to fully appear
-const STAGGER = 15; // px offset between start times of consecutive words
+let SCROLL_PER_WORD;
+let STAGGER;
 const MIN_TOTAL_SCROLL = 300; // minimal animation window (px)
 const READING_CUSHION = 300; // extra px so user can read
+console.log(isMobile());
+if (!isMobile()) {
+  SCROLL_PER_WORD = 75;
+  STAGGER = 15;
+} else {
+  SCROLL_PER_WORD = 10;
+  STAGGER = 5;
+}
 
 // these will be calculated and updated on resize
 let TOTAL_SCROLL = 0;
@@ -236,7 +234,7 @@ function computeTotalsAndSectionHeight() {
   // ensure the aboutSection is tall enough: TOTAL_SCROLL plus viewport so user can scroll through
   const requiredHeightPx = TOTAL_SCROLL + window.innerHeight;
   // use minHeight so CSS can still control other layout aspects if needed
-  aboutSection.style.minHeight = requiredHeightPx + 200 + "px";
+  aboutSection.style.minHeight = requiredHeightPx + 200 + 'px';
 }
 
 function setHiddenStyles() {
@@ -248,32 +246,32 @@ function setHiddenStyles() {
 }
 
 function onAllWordsHidden() {
-  const elements = document.querySelectorAll(".statValue, .statText");
-  const widthZero = document.querySelectorAll(".numberTopHr, .numberBottomHr");
-  const numbersHeading = document.getElementById("numbersHeading");
+  const elements = document.querySelectorAll('.statValue, .statText');
+  const widthZero = document.querySelectorAll('.numberTopHr, .numberBottomHr');
+  const numbersHeading = document.getElementById('numbersHeading');
   elements.forEach((element) => {
-    element.classList.add("fadeAway");
+    element.classList.add('fadeAway');
   });
   widthZero.forEach((element) => {
-    element.classList.add("widthZero");
+    element.classList.add('widthZero');
   });
 
-  numbersHeading.classList.add("fadeLeft");
+  numbersHeading.classList.add('fadeLeft');
 }
 
 function onAllWordsShown() {
-  const elements = document.querySelectorAll(".statValue, .statText");
-  const widthZero = document.querySelectorAll(".numberTopHr, .numberBottomHr");
-  const numbersHeading = document.getElementById("numbersHeading");
-  console.log("running");
+  const elements = document.querySelectorAll('.statValue, .statText');
+  const widthZero = document.querySelectorAll('.numberTopHr, .numberBottomHr');
+  const numbersHeading = document.getElementById('numbersHeading');
+  console.log('running');
   elements.forEach((element) => {
-    element.classList.remove("fadeAway");
+    element.classList.remove('fadeAway');
   });
   widthZero.forEach((element) => {
-    element.classList.remove("widthZero");
+    element.classList.remove('widthZero');
   });
 
-  numbersHeading.classList.remove("fadeLeft");
+  numbersHeading.classList.remove('fadeLeft');
 }
 
 function update() {
@@ -286,14 +284,25 @@ function update() {
   // fully outside window (before start or after end) => hidden
   if (progress <= 0 || progress >= TOTAL_SCROLL) {
     setHiddenStyles();
-    document.getElementById("nav").classList.remove("invert")
+    document.getElementById('nav').classList.remove('invert');
+    currentActivity.classList.remove('invert');
     onAllWordsHidden();
     return;
   }
 
   if (progress <= TOTAL_SCROLL && progress >= 0) {
     onAllWordsShown();
-    document.getElementById("nav").classList.add("invert")
+    currentActivity.classList.add('invert');
+    document.getElementById('nav').classList.add('invert');
+
+    if (isMobile()) {
+      words.forEach((word) => {
+        word.style.transition = "all 500ms cubic-bezier(.4, 0, .6, 1)";
+        word.style.transform = `translateY(0%)`;
+        word.style.filter = `blur(0px)`;
+        word.style.opacity = `1`;
+      });
+    }
   }
 
   // if we are inside the active window, reset the hidden callback flag so it can trigger again later
@@ -302,30 +311,30 @@ function update() {
   // Determine whether we are in the forward or reverse half
   const forward = progress <= HALF;
 
-  words.forEach((word, i) => {
-    const wordStart = i * STAGGER;
+  if (!isMobile()) {
+    words.forEach((word, i) => {
+      const wordStart = i * STAGGER;
 
-    // local progress (px) relative to this word's start
-    const localPx = forward
-      ? progress - wordStart
-      : TOTAL_SCROLL - progress - wordStart;
+      // local progress (px) relative to this word's start
+      const localPx = forward ? progress - wordStart : TOTAL_SCROLL - progress - wordStart;
 
-    // map to [0,1] using SCROLL_PER_WORD
-    const raw = localPx / SCROLL_PER_WORD;
-    const wordProgress = clamp(raw, 0, 1);
+      // map to [0,1] using SCROLL_PER_WORD
+      const raw = localPx / SCROLL_PER_WORD;
+      const wordProgress = clamp(raw, 0, 1);
 
-    // slight easing
-    const eased = Math.pow(wordProgress, 0.9);
+      // slight easing
+      const eased = Math.pow(wordProgress, 0.9);
 
-    // visuals
-    const translateY = 10 * (1 - eased); // 10% -> 0%
-    const blur = 10 * (1 - eased); // 10px -> 0px
-    const opacity = eased; // 0 -> 1
+      // visuals
+      const translateY = 10 * (1 - eased); // 10% -> 0%
+      const blur = 10 * (1 - eased); // 10px -> 0px
+      const opacity = eased; // 0 -> 1
 
-    word.style.transform = `translateY(${translateY}%)`;
-    word.style.filter = `blur(${blur}px)`;
-    word.style.opacity = `${opacity}`;
-  });
+      word.style.transform = `translateY(${translateY}%)`;
+      word.style.filter = `blur(${blur}px)`;
+      word.style.opacity = `${opacity}`;
+    });
+  }
 }
 
 // rAF-throttled scroll handler
@@ -344,25 +353,56 @@ computeTotalsAndSectionHeight();
 setHiddenStyles();
 update();
 
-window.addEventListener("scroll", onScroll, { passive: true });
-window.addEventListener("resize", () => {
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', () => {
   computeTotalsAndSectionHeight();
   requestAnimationFrame(update);
 });
 
-document.getElementById("cards").onmousemove = (e) => {
-  for (const card of document.getElementsByClassName("card")) {
+document.getElementById('cards').onmousemove = (e) => {
+  for (const card of document.getElementsByClassName('card')) {
     const rect = card.getBoundingClientRect(),
       x = e.clientX - rect.left,
       y = e.clientY - rect.top;
 
-    card.style.setProperty("--mouse-x", `${x}px`);
-    card.style.setProperty("--mouse-y", `${y}px`);
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
   }
 };
 
-const menu = document.getElementById("menu");
+const menu = document.getElementById('menu');
 
 menu.onclick = () => {
-  menu.classList.toggle("clicked");
+  menu.classList.toggle('clicked');
+  if (isMobile()) {
+    currentActivity.classList.toggle('unhide');
+  }
 };
+
+// hide current activity:
+
+document.addEventListener('DOMContentLoaded', () => {
+  const footer = document.getElementById('footer');
+  if (!footer || !currentActivity) return; // safety
+
+  // Prefer IntersectionObserver
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            currentActivity.classList.add('hide');
+          } else {
+            currentActivity.classList.remove('hide');
+          }
+        });
+      },
+      {
+        root: null,
+        threshold: 0,
+      }
+    );
+
+    observer.observe(footer);
+  }
+});

@@ -8,6 +8,18 @@ export const prerender = true;
 
 const reader = createReader(process.cwd(), keystaticConfig);
 
+// Fetch sponsors
+const sponsorsEntries = await reader.collections.sponsors.all();
+const sponsors = sponsorsEntries
+  .sort((a, b) => (a.entry.displayOrder || 0) - (b.entry.displayOrder || 0))
+  .map((sponsor) => ({
+    src: sponsor.entry.logo || '',
+    alt: sponsor.entry.name,
+    width: 120,
+    height: 48,
+  }))
+  .filter((sponsor) => sponsor.src); // Filter out sponsors without logos
+
 // Fetch recent events (latest 3)
 const eventsEntries = await reader.collections.events.all();
 const recentEvents: Post[] = eventsEntries
@@ -69,73 +81,75 @@ const formatTime = (date: Date) => {
     <div id="trailer"></div>
     <canvas id="canvas"></canvas>
     <nav id="nav">
-        <img class="logo" src="logo.png" alt="" />
-        <div class="menu" id="menu">
-            <div class="menuText">
-                <span class="menuNotClicked">MENU</span>
-                <span class="menuClicked">CLOSE</span>
-            </div>
-
-            <div class="menuDots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-
-            <div class="menuCont">
-                <div class="menuItemsCont">
-                    <div class="menuItem active"><span>Home</span></div>
-                    <div class="menuItem"><span>Team</span> <i class="bi bi-arrow-right"></i></div>
-                    <div class="menuItem"><span>events</span> <i class="bi bi-arrow-right"></i></div>
-                    <div class="menuItem"><span>gallery</span> <i class="bi bi-arrow-right"></i></div>
-                    <div class="menuItem"><span>about</span> <i class="bi bi-arrow-right"></i></div>
-                </div>
-                <div class="menuItemsCont black">
-                    <div class="menuItem"><span>Brochure</span> <i class="bi bi-arrow-up-right"></i></div>
-                </div>
-            </div>
+      <img class="logo" src="logo.png" alt="" />
+      <div class="menu" id="menu">
+        <div class="menuText">
+          <span class="menuNotClicked">MENU</span>
+          <span class="menuClicked">CLOSE</span>
         </div>
+
+        <div class="menuDots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+
+        <div class="menuCont">
+          <div class="menuItemsCont">
+            <div class="menuItem active"><span>Home</span></div>
+            <div class="menuItem"><span>Team</span> <i class="bi bi-arrow-right"></i></div>
+            <div class="menuItem"><span>events</span> <i class="bi bi-arrow-right"></i></div>
+            <div class="menuItem"><span>gallery</span> <i class="bi bi-arrow-right"></i></div>
+            <div class="menuItem"><span>about</span> <i class="bi bi-arrow-right"></i></div>
+          </div>
+          <div class="menuItemsCont black">
+            <div class="menuItem"><span>Brochure</span> <i class="bi bi-arrow-up-right"></i></div>
+          </div>
+        </div>
+      </div>
     </nav>
+    <div class="currentActivity" id="currentActivity">
+      <div class="eventName">
+        <div class="greenPulse"></div>
+        <span>uncharted'25</span>
+      </div>
+      <div class="joinBtn center">Join Us</div>
+    </div>
     <main class="center">
+      <div class="sectionName mainSection">
+        <div class="sectionNum">[001] introduction</div>
+        <div class="sectionNameText">MAIT TECHNO-CULTURAL SOCIETY</div>
+      </div>
       <div class="brandName">
-        <div class="sectionName mainSection">
-          <div class="sectionNum">[001] introduction</div>
-          <div class="sectionNameText">MAIT TECHNO-CULTURAL SOCIETY</div>
-        </div>
         <div class="brandone"><span>CSI</span></div>
         <div class="brandtwo"><span>INNOWAVE</span></div>
       </div>
       <div class="brandTaglines">
         <div class="tagline-1">
-          <span>That help marketing and ops teams <br /> move faster.</span>
+          <span
+            >WHERE INNOVATON MEETS <br />
+            EXCELLENCE.</span
+          >
         </div>
         <div class="tagline-2">
-          <span>Where innovation meets excellence</span>
+          <span>We are a technocultural community bridging creativity and real-world innovation.</span>
         </div>
-      </div>
-      <div class="currentActivity">
-        <div class="eventName">
-          <div class="greenPulse"></div>
-          <span>uncharted'25</span>
-        </div>
-        <div class="joinBtn center">Join Us</div>
       </div>
     </main>
     <section class="trust">
       <div class="trustHeading">Trusted by Teams Across Industries</div>
+
       <div class="trustyCont">
-        <div class="company"><img src="trusty.webp" alt="" /></div>
-        <div class="company"><img src="trusty2.webp" alt="" /></div>
-        <div class="company"><img src="trusty.webp" alt="" /></div>
-        <div class="company"><img src="trusty2.webp" alt="" /></div>
-        <div class="company"><img src="trusty.webp" alt="" /></div>
-        <div class="company"><img src="trusty2.webp" alt="" /></div>
-        <div class="company"><img src="trusty.webp" alt="" /></div>
-        <div class="company"><img src="trusty2.webp" alt="" /></div>
-        <div class="company"><img src="trusty.webp" alt="" /></div>
-        <div class="company"><img src="trusty2.webp" alt="" /></div>
-        <div class="company"><img src="trusty.webp" alt="" /></div>
-        <div class="company"><img src="trusty2.webp" alt="" /></div>
-        <div class="company"><img src="trusty.webp" alt="" /></div>
+        {
+          sponsors.length > 0 ? (
+            sponsors.map((sponsor) => (
+              <div class="company">
+                <img src={sponsor.src} alt={sponsor.alt} width={sponsor.width} height={sponsor.height} />
+              </div>
+            ))
+          ) : (
+            <div class="no-sponsors">no sponsors for now</div>
+          )
+        }
       </div>
     </section>
     <section class="updates">
@@ -200,156 +214,171 @@ const formatTime = (date: Date) => {
       </div>
     </section>
     <section class="bento">
-        <div class="sectionName">
-            <div class="sectionNum">[004] Highlights</div>
-            <div class="sectionNameText">What we are doing</div>
-        </div>
-        <div class="bentoCont">
-            <div id="cards">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img src="update-1.webp" alt="">
-                        </div>
-                        <div class="card-info-wrapper">
-                            <div class="card-info">
-                                <div class="card-info-title">
-                                    <h3>Digital Revolution</h3>
-                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+      <div class="sectionName">
+        <div class="sectionNum">[004] Highlights</div>
+        <div class="sectionNameText">What we are doing</div>
+      </div>
+      <div class="bentoCont">
+        <div id="cards">
+          <div class="card">
+            <div class="card-content">
+              <div class="card-image">
+                <img src="update-1.webp" alt="" />
+              </div>
+              <div class="card-info-wrapper">
+                <div class="card-info">
+                  <div class="card-info-title">
+                    <h3>Digital Revolution</h3>
+                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                  </div>
                 </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img src="update-1.webp" alt="">
-                        </div>
-                        <div class="card-info-wrapper">
-                            <div class="card-info">
-                                <div class="card-info-title">
-                                    <h3>Digital Revolution</h3>
-                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img src="update-1.webp" alt="">
-                        </div>
-                        <div class="card-info-wrapper">
-                            <div class="card-info">
-                                <div class="card-info-title">
-                                    <h3>Digital Revolution</h3>
-                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card longCard">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img src="update-1.webp" alt="">
-                        </div>
-                        <div class="card-info-wrapper">
-                            <div class="card-info">
-                                <div class="card-info-title">
-                                    <h3>Digital Revolution</h3>
-                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img src="update-1.webp" alt="">
-                        </div>
-                        <div class="card-info-wrapper">
-                            <div class="card-info">
-                                <div class="card-info-title">
-                                    <h3>Digital Revolution</h3>
-                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img src="update-1.webp" alt="">
-                        </div>
-                        <div class="card-info-wrapper">
-                            <div class="card-info">
-                                <div class="card-info-title">
-                                    <h3>Digital Revolution</h3>
-                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card longCard">
-                    <div class="card-content">
-                        <div class="card-image">
-                            <img src="update-1.webp" alt="">
-                        </div>
-                        <div class="card-info-wrapper">
-                            <div class="card-info">
-                                <div class="card-info-title">
-                                    <h3>Digital Revolution</h3>
-                                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
+          <div class="card">
+            <div class="card-content">
+              <div class="card-image">
+                <img src="update-1.webp" alt="" />
+              </div>
+              <div class="card-info-wrapper">
+                <div class="card-info">
+                  <div class="card-info-title">
+                    <h3>Digital Revolution</h3>
+                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-content">
+              <div class="card-image">
+                <img src="update-1.webp" alt="" />
+              </div>
+              <div class="card-info-wrapper">
+                <div class="card-info">
+                  <div class="card-info-title">
+                    <h3>Digital Revolution</h3>
+                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card longCard">
+            <div class="card-content">
+              <div class="card-image">
+                <img src="update-1.webp" alt="" />
+              </div>
+              <div class="card-info-wrapper">
+                <div class="card-info">
+                  <div class="card-info-title">
+                    <h3>Digital Revolution</h3>
+                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-content">
+              <div class="card-image">
+                <img src="update-1.webp" alt="" />
+              </div>
+              <div class="card-info-wrapper">
+                <div class="card-info">
+                  <div class="card-info-title">
+                    <h3>Digital Revolution</h3>
+                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-content">
+              <div class="card-image">
+                <img src="update-1.webp" alt="" />
+              </div>
+              <div class="card-info-wrapper">
+                <div class="card-info">
+                  <div class="card-info-title">
+                    <h3>Digital Revolution</h3>
+                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card longCard">
+            <div class="card-content">
+              <div class="card-image">
+                <img src="update-1.webp" alt="" />
+              </div>
+              <div class="card-info-wrapper">
+                <div class="card-info">
+                  <div class="card-info-title">
+                    <h3>Digital Revolution</h3>
+                    <h4>VR gaming stall showcased our tech enthusiasm in Innovation Mela.</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
-    <footer>
-        <div class="csiFooterName">
-            CSI
+    <footer id="footer">
+      <div class="csiFooterName">CSI</div>
+      <div class="footerLinks">
+        <div class="linksContainer">
+          <a class="footerLink active" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]<div class="marginrt">
+            </div>home</a
+          >
+          <a class="footerLink" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
+            <div class="marginrt"></div>team
+          </a>
+          <a class="footerLink" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
+            <div class="marginrt"></div>events
+          </a>
+          <a class="footerLink" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
+            <div class="marginrt"></div>gallery
+          </a>
+          <a class="footerLink" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
+            <div class="marginrt"></div>about
+          </a>
         </div>
-        <div class="footerLinks">
-            <div class="linksContainer">
-                <a class="footerLink active" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i>
-                    </div>]<div class="marginrt"></div>home</a>
-                <a class="footerLink" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
-                    <div class="marginrt"></div>team</a>
-                <a class="footerLink" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
-                    <div class="marginrt"></div>events</a>
-                <a class="footerLink" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
-                    <div class="marginrt"></div>gallery</a>
-                <a class="footerLink" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
-                    <div class="marginrt"></div>about</a>
-            </div>
-            <div class="linksContainer">
-                <a class="footerLink" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
-                    <div class="marginrt"></div>instagram</a>
-                <a class="footerLink" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
-                    <div class="marginrt"></div>linkedin</a>
-                <a class="footerLink" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
-                    <div class="marginrt"></div>x</a>
-                <a class="footerLink" href="">[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
-                    <div class="marginrt"></div>youtube</a>
-            </div>
-            <div class="linksContainer">
-                <a class="footerLink" href="">Maharaja Agrasen Institute Of Technology</a>
-                <a class="footerLink" href="">csiinnowave@gmail.com</a>
-                <a class="footerLink" href="">+91 8920125672</a>
-            </div>
+        <div class="linksContainer">
+          <a class="footerLink" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
+            <div class="marginrt"></div>instagram
+          </a>
+          <a class="footerLink" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
+            <div class="marginrt"></div>linkedin
+          </a>
+          <a class="footerLink" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
+            <div class="marginrt"></div>x
+          </a>
+          <a class="footerLink" href=""
+            >[<div class="arrow center"><i class="bi bi-arrow-right-short"></i></div>]
+            <div class="marginrt"></div>youtube
+          </a>
         </div>
-        <div class="copyright">COPYRIGHT © 2025 CSI-INNOWAVE</div>
+        <div class="linksContainer long">
+          <a class="footerLink" href="">Maharaja Agrasen Institute Of Technology</a>
+          <a class="footerLink" href="">csiinnowave@gmail.com</a>
+          <a class="footerLink" href="">+91 8920125672</a>
+        </div>
+      </div>
+      <div class="copyright">COPYRIGHT © 2025 CSI-INNOWAVE</div>
     </footer>
     <script type="module" src="/assets/js/index.js"></script>
   </body>
-
 </html>
