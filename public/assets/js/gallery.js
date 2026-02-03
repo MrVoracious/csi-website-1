@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
       isDragging = true;
     }
 
-    targetX -= dx;
-    targetY -= dy;
+    targetX -= dx*1.15;
+    targetY -= dy*1.15;
   });
 
   viewport.addEventListener('pointerup', (e) => {
