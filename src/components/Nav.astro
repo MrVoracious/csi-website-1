@@ -1,0 +1,53 @@
+---
+import '../assets/styles/nav.css';
+const pathname = Astro.url.pathname;
+
+const navItems = [
+  { name: "Home", path: "/" },
+  { name: "Team", path: "/team" },
+  { name: "events", path: "/events" },
+  { name: "gallery", path: "/gallery" },
+  { name: "about", path: "/about" },
+];
+---
+
+<nav id="nav">
+    <img class="logo" src="/logo.png" alt="Logo" />
+    <div class="menu" id="menu">
+        <div class="menuText">
+            <span class="menuNotClicked">MENU</span>
+            <span class="menuClicked">CLOSE</span>
+        </div>
+
+        <div class="menuDots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="menuCont">
+            <div class="menuItemsCont">
+                {navItems.map((item) => {
+                    const isActive = pathname === item.path || (item.path !== '/' && pathname.startsWith(item.path));
+                    
+                    return (
+                        <a 
+                            href={item.path} 
+                            class:list={["menuItem", { active: isActive }]}
+                        >
+                            <span>{item.name}</span>
+                            {item.name !== "Home" && <i class="bi bi-arrow-right"></i>}
+                        </a>
+                    );
+                })}
+            </div>
+            
+            <div class="menuItemsCont black">
+                <a href="/brochure" class="menuItem">
+                    <span>Brochure</span> <i class="bi bi-arrow-up-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script type="module" src="/assets/js/nav.js"></script>
